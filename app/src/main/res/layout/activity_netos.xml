@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/title_bar" />
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#cccccc"></View>
+
+
+        <RadioGroup
+            android:id="@+id/module_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f7f7f7"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <RadioButton
+                android:id="@+id/radio_msg"
+                style="@style/tab_bottom"
+                android:layout_width="wrap_content"
+                android:checked="true"
+                android:drawableTop="@drawable/module_msg"
+                android:text="@string/module_msg" />
+
+            <RadioButton
+                android:id="@+id/radio_geoarea"
+                style="@style/tab_bottom"
+                android:layout_width="wrap_content"
+                android:drawableTop="@drawable/module_geoarea"
+                android:text="@string/module_geoarea" />
+
+            <RadioButton
+                android:id="@+id/radio_netflow"
+                style="@style/tab_bottom"
+                android:layout_width="wrap_content"
+                android:drawableTop="@drawable/module_netflow"
+                android:text="@string/module_netflow" />
+
+            <RadioButton
+                android:id="@+id/radio_netos"
+                style="@style/tab_bottom"
+                android:layout_width="wrap_content"
+                android:drawableTop="@drawable/module_netos"
+                android:text="@string/module_netos" />
+
+            <RadioButton
+                android:id="@+id/radio_mine"
+                style="@style/tab_bottom"
+                android:layout_width="wrap_content"
+                android:drawableTop="@drawable/module_mine"
+                android:text="@string/module_mine" />
+        </RadioGroup>
+    </LinearLayout>
+</LinearLayout>

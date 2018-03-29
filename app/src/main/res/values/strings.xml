@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">netos x</string>
+    <string name="module_msg">消息</string>
+    <string name="module_geoarea">地微</string>
+    <string name="module_netflow">网流</string>
+    <string name="module_netos">netos</string>
+    <string name="module_mine">我</string>
+    <string name="netarea">网域</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_net_area">NetAreaActivity</string>
+    <string name="action_settings">Settings</string>
+</resources>
