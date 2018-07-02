@@ -1,13 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/channels_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cj.studio.netos.module.NetflowModule">
+    android:nestedScrollingEnabled="false"
+    tools:context=".NetOSActivity"
+    tools:listitem="@layout/layout_netflow_recycleritem"
+    app:layoutManager="android.support.v7.widget.LinearLayoutManager">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+</android.support.v7.widget.RecyclerView>

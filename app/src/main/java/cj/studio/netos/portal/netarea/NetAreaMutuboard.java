@@ -22,10 +22,7 @@ public class NetAreaMutuboard extends Fragment implements INetAreaMutuboard {
 
     }
 
-    @Override
-    public int cnameId() {
-        return 0;
-    }
+
 
     @Override
     public void load(INetAreaWorkspace workspace) {

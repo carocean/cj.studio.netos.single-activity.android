@@ -7,8 +7,8 @@ import java.util.List;
  */
 
 public interface INetOSPortal {
-    public IContainer container();
-    public ITitlebar titlebar();
+    public IDisplay display();
+    public IToolbar toolbar();
     ISelection selection();
     ISlideButton slideButton();
     List<IModule> modules();

@@ -7,5 +7,4 @@ package cj.studio.netos.framework;
 public interface IModule {
     String name();
     void input(Frame frame, ICell cell);
-    int cnameId();
 }

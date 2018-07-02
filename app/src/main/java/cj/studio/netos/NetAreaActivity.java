@@ -1,8 +1,8 @@
 package cj.studio.netos;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.INetAreaAppboard;
@@ -26,12 +26,12 @@ import cj.studio.netos.portal.netarea.NetAreaSelection;
 import cj.studio.netos.portal.netarea.NetAreaTitlebar;
 import cj.studio.netos.portal.netarea.NetosProgramTemplate;
 
-public class NetAreaActivity extends FragmentActivity implements INetAreaPortal {
+public class NetAreaActivity extends AppCompatActivity implements INetAreaPortal {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_net_area);
+        setContentView(R.layout.activity_netarea);
 
         INeuron neuron = (INeuron) getApplication();
         ICell cell = neuron.cell();

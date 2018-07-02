@@ -70,10 +70,7 @@ public class NetAreaWorkbench implements INetAreaWorkbench, IModule {
     }
 
 
-    @Override
-    public int cnameId() {
-        return 0;
-    }
+
 
     @Override
     public INetosProgram openDesktop() {
@@ -132,13 +129,13 @@ public class NetAreaWorkbench implements INetAreaWorkbench, IModule {
         navigation.init(provider);
 
         site.addService("$.netarea.workspace", workspace);
-        site.addService("$.netarea.titlebar", titlebar);
+        site.addService("$.netarea.toolbar", titlebar);
         site.addService("$.netarea.navigation", navigation);
         site.addService("$.netarea.selection", selection);
         site.addService("$.netarea.desktop", desktop);
         site.addService("$.netarea.mutuboard", mutuboard);
         site.addService("$.netarea.appboard", appboard);
-        site.addService("$.netarea.program.container", container);
+        site.addService("$.netarea.program.display", container);
 
         modules.put(desktop.name(),desktop);
         modules.put(mutuboard.name(),mutuboard);

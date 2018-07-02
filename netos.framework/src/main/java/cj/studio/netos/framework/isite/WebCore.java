@@ -9,7 +9,6 @@ import java.util.Map;
 
 import cj.studio.netos.framework.ICellsap;
 import cj.studio.netos.framework.IServiceProvider;
-import cj.studio.netos.framework.isite.system.SiteInfoFunctions;
 import cj.studio.netos.framework.isite.system.SubjectFunctions;
 import cj.studio.netos.framework.isite.system.SensorFunctions;
 import cj.studio.netos.framework.isite.system.WindowFunctions;
@@ -21,43 +20,38 @@ import cj.studio.netos.framework.isite.system.WindowFunctions;
 public class WebCore implements IWebCore, IServiceProvider {
     private IServiceProvider site;
     private Map<String, Object> registry;
-    private List<IBrowserable> browsers;
+    private List<IWebsite> Websites;
 
     public WebCore(IServiceProvider site) {
         this.site = site;
         registry=new HashMap<>();
-        browsers = new ArrayList<>();
+        Websites = new ArrayList<>();
         registerServices();
     }
 
     @Override
-    public IBrowserable createBrowser(WebView webView) {
-        IBrowserable browserable = new Browser(webView, this);
-        browsers.add(browserable);
+    public IWebsite createWebsite(WebView webView) {
+        IWebsite browserable = new Website(webView, this);
+        Websites.add(browserable);
         return browserable;
     }
 
     @Override
-    public IBrowserable createWebApp(WebView webView) {
-        IBrowserable browserable = new WebApp(webView, this);
-        browsers.add(browserable);
+    public IWebsite createWebApp(WebView webView) {
+        IWebsite browserable = new Webapp(webView, this);
+        Websites.add(browserable);
         return browserable;
     }
 
-    @Override
-    public IBrowserable createWebSite(WebView webView) {
-        IBrowserable browserable = new WebSite(webView, this);
-        browsers.add(browserable);
-        return browserable;
-    }
+
 
     @Override
     public void close() {
-        for (IBrowserable b : browsers) {
+        for (IWebsite b : Websites) {
             b.close();
         }
         registry.clear();
-        browsers.clear();
+        Websites.clear();
         site = null;
     }
 
@@ -88,7 +82,9 @@ public class WebCore implements IWebCore, IServiceProvider {
         ICellsap sap=(ICellsap)site.getService(ICellsap.class);
         subject.principal(sap.principal());
 
+
         IWindowFunctions win = new WindowFunctions(subject,sensors);
+
         registry.put("$", win);
     }
 }

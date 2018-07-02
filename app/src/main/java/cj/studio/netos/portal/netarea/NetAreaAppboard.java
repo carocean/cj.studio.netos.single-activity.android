@@ -22,10 +22,7 @@ public class NetAreaAppboard extends Fragment implements INetAreaAppboard {
 
     }
 
-    @Override
-    public int cnameId() {
-        return 0;
-    }
+
 
     @Override
     public void load(INetAreaWorkspace workspace) {

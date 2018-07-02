@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import cj.studio.netos.R;
 import cj.studio.netos.framework.IModule;
-import cj.studio.netos.framework.INetAreaDesktop;
 import cj.studio.netos.framework.INetAreaNavigation;
 import cj.studio.netos.framework.INetAreaSelection;
 import cj.studio.netos.framework.IServiceProvider;

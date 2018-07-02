@@ -152,7 +152,7 @@ public final class Neuron extends Application implements INeuron, IServiceProvid
         if (Application.class.getName().equals(name)) {
             return this;
         }
-        if (IWorkbench.class.getName().equals(name)) {
+        if (ICell.class.getName().equals(name)) {
             return this.cell;
         }
         if ("$.mpusher.sender".equals(name)) {

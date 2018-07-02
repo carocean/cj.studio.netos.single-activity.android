@@ -2,7 +2,9 @@ package cj.studio.netos.framework;
 
 import android.webkit.WebView;
 
-import cj.studio.netos.framework.isite.IBrowserable;
+import java.util.Set;
+
+import cj.studio.netos.framework.isite.IWebsite;
 
 /**
  * Created by caroceanjofers on 2018/2/25.
@@ -14,19 +16,19 @@ public interface INetAreaProgramContainer extends IModule{
      * @param webView
      * @return
      */
-    IBrowserable createBrowser(WebView webView);
-    /**
-     * 创建网站
-     * @param webView
-     * @return
-     */
-    IBrowserable createWebSite(WebView webView);
+    IWebsite createDesktop(WebView webView);
+
     /**
      * 创建web应用
      * @param webView
      * @return
      */
-    IBrowserable createWebApp(WebView webView);
-    void removeBrowser(IBrowserable browser);
+    IWebsite createWebApp(WebView webView);
+    IWebsite createWebSite(WebView webView);
+    void removeWebsite(IWebsite browser);
     void close();
+    void removeWebsite(String name);
+    IWebsite getWebsite(String name);
+    Set<String> enunWebsiteKeys();
+    IWebsite getDesktop();
 }

@@ -1,5 +1,8 @@
 package cj.studio.netos.framework;
 
+import android.support.annotation.NonNull;
+import android.view.MenuItem;
+
 import java.util.List;
 
 /**
@@ -8,5 +11,6 @@ import java.util.List;
 
 public interface INavigation {
     void init(IServiceProvider provider, List<IModule> moduleList);
-    void naviToModule(String mod_name);
+    void naviToModule(@NonNull MenuItem item);
+    void naviToDesktop();
 }

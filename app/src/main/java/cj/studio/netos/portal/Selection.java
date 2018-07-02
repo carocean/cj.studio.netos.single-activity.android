@@ -2,6 +2,7 @@ package cj.studio.netos.portal;
 
 import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IModule;
+import cj.studio.netos.framework.IRefreshMenuCallback;
 import cj.studio.netos.framework.ISelection;
 
 /**
@@ -10,17 +11,35 @@ import cj.studio.netos.framework.ISelection;
 
 public class Selection implements ISelection {
     ICell cell;
-    IModule selected;
+    IModule selectedModule;
+    int selectedMenu=-1;
+    IRefreshMenuCallback refreshMenu;
     public Selection(ICell cell) {
         this.cell=cell;
     }
 
     @Override
-    public void onselected(IModule selected) {
-        this.selected=selected;
+    public void onRefreshMenu(IRefreshMenuCallback refreshMenu) {
+        this.refreshMenu=refreshMenu;
+    }
+
+    @Override
+    public void onselected(IModule selectedModule, int selectedMenu) {
+        this.selectedModule =selectedModule;
+        this.selectedMenu=selectedMenu;
     }
     @Override
-    public IModule selected() {
-        return selected;
+    public IModule selectedModule() {
+        return selectedModule;
+    }
+
+    @Override
+    public void refreshMenu() {
+        refreshMenu.refreshMenu(this);
+    }
+
+    @Override
+    public int selectedMenu() {
+        return selectedMenu;
     }
 }

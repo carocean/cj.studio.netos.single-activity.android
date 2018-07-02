@@ -15,8 +15,7 @@ import cj.studio.netos.framework.INetAreaDesktop;
 import cj.studio.netos.framework.INetAreaProgramContainer;
 import cj.studio.netos.framework.INetAreaWorkspace;
 import cj.studio.netos.framework.IServiceProvider;
-import cj.studio.netos.framework.isite.IBrowserable;
-import cj.studio.netos.framework.isite.IWebCore;
+import cj.studio.netos.framework.isite.IWebsite;
 
 /**
  * Created by caroceanjofers on 2018/2/26.
@@ -35,9 +34,9 @@ public class NetAreaDesktop extends Fragment implements INetAreaDesktop {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_netarea_desktop, container, false);
         WebView webView = view.findViewById(R.id.desktop_region);
-        INetAreaProgramContainer programContainer = (INetAreaProgramContainer) site.getService("$.netarea.program.container");
+        INetAreaProgramContainer programContainer = (INetAreaProgramContainer) site.getService("$.netarea.program.display");
 
-        IBrowserable webSite = programContainer.createWebSite(webView);
+        IWebsite webSite = programContainer.createWebApp(webView);
 
         webSite.displayer().loadUrl("file:///android_asset/index.html");
 
@@ -54,10 +53,6 @@ public class NetAreaDesktop extends Fragment implements INetAreaDesktop {
 
     }
 
-    @Override
-    public int cnameId() {
-        return 0;
-    }
 
     @Override
     public void load(IServiceProvider site) {

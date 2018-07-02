@@ -1,7 +1,5 @@
 package cj.studio.netos.portal.netarea;
 
-import android.support.v4.app.Fragment;
-
 import cj.studio.netos.framework.IModule;
 import cj.studio.netos.framework.INetAreaSelection;
 

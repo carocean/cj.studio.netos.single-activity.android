@@ -118,7 +118,7 @@ public final class Workbench implements IWorkbench, ICell {
     public IDendrite createDendrite(ISynapsis synapsis) {
         String name = synapsis.bindModule().name();
         if (dendriteMap.containsKey(name)) {
-            throw new RuntimeException("   ");
+            throw new RuntimeException("已存在模块："+name);
         }
         IDendrite dendrite = new Dendrite(synapsis);
         dendriteMap.put(name, dendrite);
@@ -230,8 +230,8 @@ public final class Workbench implements IWorkbench, ICell {
         INavigation navigation = portal.navigation();
         ISelection selection = portal.selection();
         ISlideButton slideButton = portal.slideButton();
-        ITitlebar titlebar = portal.titlebar();
-        IContainer container = portal.container();
+        IToolbar titlebar = portal.toolbar();
+        IDisplay container = portal.display();
         IHistory history = portal.history();
         List<IModule> moduleList = portal.modules();
         IDownSlideRegion downSlideRegion = portal.downSlideRegion();
@@ -246,9 +246,9 @@ public final class Workbench implements IWorkbench, ICell {
         site.addService("$.workbench.navigation", navigation);
         site.addService("$.workbench.selection", selection);//当前操作在哪个模块上
         site.addService("$.workbench.slidebutton", slideButton);
-        site.addService("$.workbench.titlebar", titlebar);
+        site.addService("$.workbench.toolbar", titlebar);
         site.addService("$.workbench.downslideregion", downSlideRegion);
-        site.addService("$.workbench.container", container);
+        site.addService("$.workbench.display", container);
         site.addService("$.workbench.netarea", netAreaWorkbench);//打开、关闭等
         site.addService("$.workbench.webcore", webCore);//浏览器、微站、微应等支持
 
@@ -257,7 +257,8 @@ public final class Workbench implements IWorkbench, ICell {
                 addModule(m);
             }
             addModule(netAreaWorkbench);
-            navigation.naviToModule("message");
+            navigation.naviToDesktop();
+//
         }
 
     }

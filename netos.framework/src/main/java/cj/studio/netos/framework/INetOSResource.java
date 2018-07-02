@@ -6,4 +6,6 @@ package cj.studio.netos.framework;
 
 public interface INetOSResource {
     public String getNetOSString(int resid);
+    String getNetOSAnyResourceName(int resid);
+    int getIdentifier(String name,String defType);
 }

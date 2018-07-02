@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_desktop"
+        android:checked="true"
+        android:icon="@drawable/ic_desktop_network_24dp"
+        android:title="@string/module_desktop" />
+    <item
+        android:id="@+id/navigation_netflow"
+        android:checked="true"
+        android:icon="@drawable/ic_netflow_blank_24dp"
+        android:title="@string/module_netflow" />
+
+    <item
+        android:id="@+id/navigation_geomicroblog"
+        android:icon="@drawable/ic_geomicroblog_black_24dp"
+        android:title="@string/module_geomicroblog" />
+
+    <item
+        android:id="@+id/navigation_market"
+        android:icon="@drawable/ic_market_black_24dp"
+        android:title="@string/module_market" />
+    <!--
+    <item
+        android:id="@+id/navigation_mine"
+        android:icon="@drawable/ic_mine_black_24dp"
+        android:title="@string/title_mine" />
+    -->
+</menu>

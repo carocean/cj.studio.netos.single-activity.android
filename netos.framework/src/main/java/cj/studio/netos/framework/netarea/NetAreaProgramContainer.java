@@ -2,15 +2,16 @@ package cj.studio.netos.framework.netarea;
 
 import android.webkit.WebView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.INetAreaProgramContainer;
 import cj.studio.netos.framework.INetosProgramTemplate;
 import cj.studio.netos.framework.IServiceProvider;
-import cj.studio.netos.framework.isite.IBrowserable;
+import cj.studio.netos.framework.isite.IWebsite;
 import cj.studio.netos.framework.isite.IWebCore;
 
 /**
@@ -19,11 +20,15 @@ import cj.studio.netos.framework.isite.IWebCore;
 
 class NetAreaProgramContainer implements INetAreaProgramContainer {
     IServiceProvider site;
-    List<IBrowserable> browsers;
-
+    Map<String, IWebsite> webapps;
+    IWebsite desktop;
     public NetAreaProgramContainer(INetosProgramTemplate template, IServiceProvider site) {
         this.site = site;
-        this.browsers = new ArrayList<>();
+        this.webapps = new HashMap<>();
+    }
+
+    public IWebsite getDesktop() {
+        return desktop;
     }
 
     protected IWebCore webCore() {
@@ -32,47 +37,64 @@ class NetAreaProgramContainer implements INetAreaProgramContainer {
 
     @Override
     public String name() {
-        return null;
+        return "app";
     }
 
     @Override
     public void input(Frame frame, ICell cell) {
-
+        //路由到相应的webapp或桌面上
     }
 
-    @Override
-    public int cnameId() {
-        return 0;
-    }
+
 
     @Override
-    public IBrowserable createBrowser(WebView webView) {
-        IBrowserable browserable = webCore().createBrowser(webView);
-        browsers.add(browserable);
+    public IWebsite createDesktop(WebView webView) {
+        if(desktop!=null){
+            throw new RuntimeException("网域已有桌面");
+        }
+        IWebsite browserable = webCore().createWebsite(webView);
+        desktop=browserable;
         return browserable;
     }
 
+
     @Override
-    public IBrowserable createWebSite(WebView webView) {
-        IBrowserable browserable = webCore().createWebSite(webView);
-        browsers.add(browserable);
+    public IWebsite createWebApp(WebView webView) {
+        IWebsite browserable = webCore().createWebApp(webView);
+        webapps.put(browserable.getBrowserinfo().name(), browserable);
         return browserable;
+    }
+    //比如模拟浏览器
+    @Override
+    public IWebsite createWebSite(WebView webView) {
+        IWebsite browserable = webCore().createWebsite(webView);
+        webapps.put(browserable.getBrowserinfo().name(), browserable);
+        return browserable;
+    }
+    @Override
+    public void removeWebsite(IWebsite browser) {
+        webapps.remove(browser);
     }
 
     @Override
-    public IBrowserable createWebApp(WebView webView) {
-        IBrowserable browserable = webCore().createWebApp(webView);
-        browsers.add(browserable);
-        return browserable;
+    public void removeWebsite(String name) {
+        webapps.remove(name);
     }
 
     @Override
-    public void removeBrowser(IBrowserable browser) {
-        browsers.remove(browser);
+    public IWebsite getWebsite(String name) {
+        return webapps.get(name);
+    }
+
+    @Override
+    public Set<String> enunWebsiteKeys() {
+        return webapps.keySet();
     }
 
     @Override
     public void close() {
-        browsers.clear();
+        webapps.clear();
+        desktop.close();
+        desktop=null;
     }
 }

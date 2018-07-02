@@ -3,6 +3,7 @@ package cj.studio.netos.framework.isite.system;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
+import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.isite.ISiteInfoFunctions;
 import cj.studio.netos.framework.isite.ISensorFunctions;
 import cj.studio.netos.framework.isite.ISubjectFunctions;
@@ -13,12 +14,16 @@ import cj.studio.netos.framework.isite.IWindowFunctions;
  */
 
 public class WindowFunctions extends Object implements IWindowFunctions {
-
     private final ISensorFunctions sensors;
     private final ISubjectFunctions subject;
     public WindowFunctions(SubjectFunctions subject, ISensorFunctions sensors) {
         this.subject=subject;
         this.sensors=sensors;
+    }
+    @JavascriptInterface
+    @Override
+    public void ouput(Frame frame) {
+        
     }
 
     @JavascriptInterface
