@@ -5,6 +5,6 @@ package cj.studio.netos.framework;
  */
 
 public interface IServiceProvider {
-    Object getService(String name);
+    <T> T getService(String name);
     <T> T getService(Class<T> clazz);
 }

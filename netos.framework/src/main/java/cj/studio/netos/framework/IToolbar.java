@@ -5,6 +5,5 @@ package cj.studio.netos.framework;
  */
 
 public interface IToolbar {
-    void setText(int resId);
     void setText(CharSequence text);
 }

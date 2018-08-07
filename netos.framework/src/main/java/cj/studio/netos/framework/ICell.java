@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface ICell extends ICloseable,IServiceProvider {
     void refresh();
-    Object getService(String name);
+    <T> T getService(String name);
     <T> T getService(Class<T> clazz);
     IAxon axon();
     IDendrite dendrite(String moduleName);

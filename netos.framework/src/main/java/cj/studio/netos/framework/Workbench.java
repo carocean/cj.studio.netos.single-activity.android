@@ -6,13 +6,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import cj.studio.netos.framework.isite.IWebCore;
-import cj.studio.netos.framework.isite.WebCore;
-import cj.studio.netos.framework.netarea.NetAreaWorkbench;
 import cj.studio.netos.framework.os.ISender;
 
 /**
@@ -23,9 +19,11 @@ public final class Workbench implements IWorkbench, ICell {
     private IAxon axon;
     private Map<String, IModule> moduleMap;//模块容器，另外还有：微应用容器（微应用需要安装）。而微网站仅需要安装微网站模板，一个模板支撑无数企业的移动门户
     private Map<String, IDendrite> dendriteMap;//key是突触名即模块名
-
+    private Map<String, IViewport> viewportMap;
     private IProfile profile;
-
+    ISurfaceHost host;
+    INavigation navigation;
+    ISelection selection;
     private IServiceSite site;
 
     public Workbench(IServiceProvider parent) {
@@ -33,6 +31,10 @@ public final class Workbench implements IWorkbench, ICell {
         this.site = new ServiceSite(parent);
     }
 
+    @Override
+    public ISurfaceHost host() {
+        return host;
+    }
 
     @Override
     public WebView createWebView(Activity parent) {
@@ -46,6 +48,7 @@ public final class Workbench implements IWorkbench, ICell {
         moduleMap.clear();
         site.dispose();
         dendriteMap.clear();
+        viewportMap.clear();
     }
 
     @Override
@@ -118,7 +121,7 @@ public final class Workbench implements IWorkbench, ICell {
     public IDendrite createDendrite(ISynapsis synapsis) {
         String name = synapsis.bindModule().name();
         if (dendriteMap.containsKey(name)) {
-            throw new RuntimeException("已存在模块："+name);
+            throw new RuntimeException("已存在模块：" + name);
         }
         IDendrite dendrite = new Dendrite(synapsis);
         dendriteMap.put(name, dendrite);
@@ -144,7 +147,7 @@ public final class Workbench implements IWorkbench, ICell {
     }
 
     @Override
-    public IModule getModule(String name) {
+    public IModule module(String name) {
         return moduleMap.get(name);
     }
 
@@ -153,18 +156,20 @@ public final class Workbench implements IWorkbench, ICell {
         return moduleMap.containsKey(name);
     }
 
-
     @Override
-    public Object getService(String name) {
+    public <T> T getService(String name) {
         if ("$.workbench".equals(name)) {
-            return this;
+            return (T)this;
         }
         if ("$.net.http".equals(name)) {
             return site.getService(name);//http通讯服务
         }
-        if (moduleMap.containsKey(name)) {
-            return moduleMap.get(name);
+        if(name.startsWith("$.module.")){
+            String mname=name.substring("$.module.".length(),name.length());
+            IModule module=moduleMap.get(mname);
+            return (T)module;
         }
+
         return site.getService(name);
     }
 
@@ -201,9 +206,14 @@ public final class Workbench implements IWorkbench, ICell {
         Application app = site.getService(Application.class);
 //        Content content =app.getApplicationContext();
         //根据app获得以下信息并初始化
-
+        host=new SurfaceHost(site);
         this.moduleMap = new HashMap<>();
         this.dendriteMap = new HashMap<>();
+        this.viewportMap = new HashMap<>();
+
+        navigation=new Navigation(this);
+        selection=new Selection(this);
+
 
         registerServices();
 
@@ -223,45 +233,19 @@ public final class Workbench implements IWorkbench, ICell {
 
 
     @Override
-    public void renderTo(INetOSPortal portal) {
+    public void render(Activity activity) {
 
-        IWebCore webCore = new WebCore(this);
-        INetOSResource resource = portal.resource();
-        INavigation navigation = portal.navigation();
-        ISelection selection = portal.selection();
-        ISlideButton slideButton = portal.slideButton();
-        IToolbar titlebar = portal.toolbar();
-        IDisplay container = portal.display();
-        IHistory history = portal.history();
-        List<IModule> moduleList = portal.modules();
-        IDownSlideRegion downSlideRegion = portal.downSlideRegion();
-        INetAreaWorkbench netAreaWorkbench = new NetAreaWorkbench(this);
-
-
-        navigation.init(this, moduleList);
-
-
-        site.addService("$.workbench.resource", resource);
-        site.addService("$.workbench.history", history);
+        site.addService("$.workbench.selection", selection);
         site.addService("$.workbench.navigation", navigation);
-        site.addService("$.workbench.selection", selection);//当前操作在哪个模块上
-        site.addService("$.workbench.slidebutton", slideButton);
-        site.addService("$.workbench.toolbar", titlebar);
-        site.addService("$.workbench.downslideregion", downSlideRegion);
-        site.addService("$.workbench.display", container);
-        site.addService("$.workbench.netarea", netAreaWorkbench);//打开、关闭等
-        site.addService("$.workbench.webcore", webCore);//浏览器、微站、微应等支持
+        site.addService("$.workbench.host", host);
 
-        if (moduleList != null) {
-            for (IModule m : moduleList) {
-                addModule(m);
-            }
-            addModule(netAreaWorkbench);
-            navigation.naviToDesktop();
-//
-        }
+        host.bindUI(activity);
 
+        navigation.navigate("desktop");
     }
+
+
+
 
 
     class MPusherPin implements IMessagePin {

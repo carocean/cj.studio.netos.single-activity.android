@@ -1,6 +1,9 @@
 package cj.studio.netos.framework;
 
 import android.app.Activity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.webkit.WebView;
 
 /**
@@ -8,7 +11,6 @@ import android.webkit.WebView;
  */
 
 public interface IWorkbench extends ICell {
-    void renderTo(INetOSPortal portal);
     WebView createWebView(Activity parent);
 
     //js与java交互：http://blog.csdn.net/carson_ho/article/details/64904691
@@ -19,11 +21,14 @@ public interface IWorkbench extends ICell {
 
     void removeModule(String name);
 
-    IModule getModule(String name);
+    IModule module(String name);
 
     boolean containsModule(String name);
     void addService(String name, Object service);
     void removeService(String name);
 
+    ISurfaceHost host();
+
+    void render(Activity activity);
 
 }

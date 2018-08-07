@@ -1,10 +1,13 @@
 package cj.studio.netos.framework.isite;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.webkit.ConsoleMessage;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -15,6 +18,7 @@ import java.util.Set;
 import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IServiceProvider;
+import cj.studio.netos.framework.IViewport;
 import cj.studio.netos.framework.isite.system.SiteInfoFunctions;
 
 /**
@@ -90,6 +94,25 @@ class Website implements IWebsite {
         return browserinfo.name();
     }
 
+    @Override
+    public int viewport() {
+        return 0;
+    }
+
+    @Override
+    public void renderTo(IViewport viewport, Activity on, ICell cell) {
+
+    }
+
+    @Override
+    public boolean onViewportMenuInstall(MenuInflater menuInflater, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onViewportMenuSelected(MenuItem item) {
+        return false;
+    }
 
 
     @Override
@@ -100,6 +123,8 @@ class Website implements IWebsite {
         webView.loadUrl(String.format("javascript:(function(){var json=%s;var jobj=eval(json);$.input(jobj);})()",json));
     }
 
+
+
     @Override
     public void close() {
         webView.destroy();
@@ -109,6 +134,7 @@ class Website implements IWebsite {
     public final WebView displayer() {
         return webView;
     }
+
 
     class BaseWebViewClient extends WebViewClient {
         @Override

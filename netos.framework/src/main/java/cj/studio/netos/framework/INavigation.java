@@ -1,6 +1,8 @@
 package cj.studio.netos.framework;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  */
 
 public interface INavigation {
-    void init(IServiceProvider provider, List<IModule> moduleList);
-    void naviToModule(@NonNull MenuItem item);
-    void naviToDesktop();
+    void navigate(String navigateable);
+
+    BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedEvent(Activity on);
 }

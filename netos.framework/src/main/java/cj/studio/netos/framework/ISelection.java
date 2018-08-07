@@ -7,9 +7,7 @@ import android.app.Activity;
  */
 
 public interface ISelection {
-    void onRefreshMenu(IRefreshMenuCallback refreshMenu);
-    void onselected(IModule selected,int selectedMenu);
-    int selectedMenu();
     IModule selectedModule();
-    void refreshMenu();
+
+    void setSelectedModule(IModule selectedModule);
 }

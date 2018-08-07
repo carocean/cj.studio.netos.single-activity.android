@@ -52,6 +52,7 @@ public class Webapp extends Website implements IWebsite {
         super.input(frame, cell);
     }
 
+
     class BaseWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
