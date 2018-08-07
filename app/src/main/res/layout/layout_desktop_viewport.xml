@@ -46,16 +46,19 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="56dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activity_netos"
-        tools:showIn="@layout/activity_netos">
+        tools:showIn="@layout/layout_desktop_viewport">
 
 
         <LinearLayout
-            android:id="@+id/display"
+            android:id="@+id/desktop_display"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"></LinearLayout>
@@ -63,13 +66,18 @@
 
 
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/module_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/module_navigation" />
+    <include layout="@layout/layout_bottom_navigation"></include>
 
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/desktop_fab"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@android:color/transparent"
+        app:fabSize="auto"
+        app:borderWidth="0dp"
+        app:layout_anchor="@id/appbar"
+        app:layout_anchorGravity="bottom|end"
+        app:rippleColor="@android:color/transparent"
+        app:srcCompat="@drawable/ic_desktop_more" />
 </android.support.design.widget.CoordinatorLayout>

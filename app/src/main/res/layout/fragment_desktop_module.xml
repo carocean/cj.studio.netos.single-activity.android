@@ -1,15 +1,12 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/message_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cj.studio.netos.module.DesktopModule">
+    android:nestedScrollingEnabled="false"
+    tools:context=".NetosActivity"
+    tools:listitem="@layout/message_recycleritem"
+    app:layoutManager="android.support.v7.widget.LinearLayoutManager">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/large_text" />
-
-</android.support.v4.widget.NestedScrollView>
+</android.support.v7.widget.RecyclerView>

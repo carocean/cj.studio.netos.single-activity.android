@@ -1,11 +1,15 @@
 package cj.studio.netos.module;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,6 +23,7 @@ import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.IAxon;
 import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IModule;
+import cj.studio.netos.framework.IViewport;
 
 
 public class NetflowModule extends Fragment implements IModule {
@@ -44,13 +49,6 @@ public class NetflowModule extends Fragment implements IModule {
         return view;
     }
 
-
-
-    @Override
-    public String name() {
-        return "netflow";
-    }
-
     @Override
     public void input(Frame frame, ICell cell) {
         IAxon axon=cell.axon();
@@ -58,8 +56,30 @@ public class NetflowModule extends Fragment implements IModule {
         axon.output("netos.mpusher",f);
     }
 
+    @Override
+    public String name() {
+        return "netflow";
+    }
 
+    @Override
+    public int viewport() {
+        return R.layout.layout_module_viewport;
+    }
 
+    @Override
+    public void renderTo(IViewport viewport, Activity on, ICell cell) {
+        viewport.setTitle("网流", on);
+    }
+
+    @Override
+    public boolean onViewportMenuInstall(MenuInflater menuInflater, Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onViewportMenuSelected(MenuItem item) {
+        return true;
+    }
 
     public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.MyHolder> {
 

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">netos</string>
     <string name="title_activity_net_area">中国电信</string>
+    <string name="action_message">消息</string>
+    <string name="action_news">新闻</string>
+    <string name="action_photo">照片</string>
+    <string name="action_mine">\@我的</string>
 </resources>

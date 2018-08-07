@@ -103,4 +103,8 @@
     <string name="title_activity_net_area">中国电信</string>
     <string name="hello_blank_fragment">市场</string>
     <string name="netarea">网域</string>
+    <string name="action_message">消息</string>
+    <string name="action_news">新闻</string>
+    <string name="action_photo">照片</string>
+    <string name="action_mine">\@我的</string>
 </resources>

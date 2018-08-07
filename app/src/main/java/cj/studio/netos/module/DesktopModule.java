@@ -1,94 +1,61 @@
 package cj.studio.netos.module;
 
+import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.pedaily.yc.ycdialoglib.bottomMenu.CustomBottomDialog;
+import com.pedaily.yc.ycdialoglib.bottomMenu.CustomItem;
+import com.pedaily.yc.ycdialoglib.bottomMenu.OnItemClickListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cj.studio.netos.R;
 import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.IAxon;
 import cj.studio.netos.framework.ICell;
+import cj.studio.netos.framework.ICellsap;
 import cj.studio.netos.framework.IModule;
+import cj.studio.netos.framework.IViewport;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DesktopModule.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DesktopModule#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class DesktopModule extends Fragment implements IModule {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public DesktopModule() {
-        // Required empty public constructor
+    private List initData() {
+        List mDatas = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,1,2,3,4,5,6));
+        return mDatas;
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DesktopModule.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DesktopModule newInstance(String param1, String param2) {
-        DesktopModule fragment = new DesktopModule();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_desktop_module, container, false);
+        View view = inflater.inflate(R.layout.fragment_desktop_module, container, false);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.message_recycler);
+        mRecyclerView.setAdapter(new DesktopModule.MyRecyclerAdapter(this.getContext(), initData()));
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void input(Frame frame, ICell cell) {
+        IAxon axon = cell.axon();
+        Frame f = new Frame("test /test/ netos/1.0");
+        axon.output("netos.mpusher", f);
     }
 
     @Override
@@ -97,26 +64,103 @@ public class DesktopModule extends Fragment implements IModule {
     }
 
     @Override
-    public void input(Frame frame, ICell cell) {
-        IAxon axon=cell.axon();
-        Frame f=new Frame("test /test/ netos/1.0");
-        axon.output("netos.mpusher",f);
+    public int viewport() {
+        return R.layout.layout_desktop_viewport;
     }
 
+    @Override
+    public void renderTo(IViewport viewport, Activity on, ICell cell) {
+        ICellsap cellsap= cell.getService(ICellsap.class);
+
+        viewport.setTitle("消息", on);
+        FloatingActionButton fab=on.findViewById(R.id.desktop_fab);
+//        fab.setBackgroundColor(0);
+//        fab.setBackgroundResource(R.drawable.face);
+        fab.setImageResource(R.mipmap.ic_face);
+        fab.setOnClickListener(new MyOnclickListener(on,cellsap));
+    }
+
+    @Override
+    public boolean onViewportMenuInstall(MenuInflater menuInflater, Menu menu) {
+        menu.clear();
+        menuInflater.inflate(R.menu.menu_desktop, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onViewportMenuSelected(MenuItem item) {
+        return true;
+    }
+
+    class MyOnclickListener implements View.OnClickListener{
+        private final ICellsap cellsap;
+        Activity on;
+        public  MyOnclickListener(Activity on, ICellsap cellsap){
+            this.on=on;
+            this.cellsap=cellsap;
+        }
+        @Override
+        public void onClick(View v) {
+            String principal=cellsap.principal();
+            new CustomBottomDialog(on)
+                    .title("我的桌面")
+                    .setCancel(true,"取消")
+                    .orientation(CustomBottomDialog.VERTICAL)
+                    .inflateMenu(R.menu.menu_desktop_popup, new OnItemClickListener() {
+                        @Override
+                        public void click(CustomItem item) {
+
+                        }
+                    })
+                    .show();
+        }
+
+    }
+    public class MyRecyclerAdapter extends RecyclerView.Adapter<DesktopModule.MyRecyclerAdapter.MyHolder> {
+
+        private Context mContext;
+        private List<Integer> mDatas;
+
+        public MyRecyclerAdapter(Context context, List<Integer> datas) {
+            super();
+            this.mContext = context;
+            this.mDatas = datas;
+        }
+
+        @Override
+        public int getItemCount() {
+            // TODO Auto-generated method stub
+            return mDatas.size();
+        }
+
+        @Override
+        // 填充onCreateViewHolder方法返回的holder中的控件
+        public void onBindViewHolder(DesktopModule.MyRecyclerAdapter.MyHolder holder, int position) {
+            // TODO Auto-generated method stub
+            holder.textView.setText(mDatas.get(position)+"--");
+        }
+
+        @Override
+        // 重写onCreateViewHolder方法，返回一个自定义的ViewHolder
+        public DesktopModule.MyRecyclerAdapter.MyHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
+            // 填充布局
+            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_netflow_recycleritem, null);
+            DesktopModule.MyRecyclerAdapter.MyHolder holder = new DesktopModule.MyRecyclerAdapter.MyHolder(view);
+            return holder;
+        }
+
+        // 定义内部类继承ViewHolder
+        class MyHolder extends RecyclerView.ViewHolder {
+
+            private TextView textView;
+
+            public MyHolder(View view) {
+                super(view);
+                textView = (TextView) view.findViewById(R.id.test_textView);
+            }
+
+        }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

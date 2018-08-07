@@ -1,4 +1,4 @@
-package cj.studio.netos.util;
+package cj.studio.netos.framework.util;
 
 import android.util.Log;
 import android.view.Menu;
