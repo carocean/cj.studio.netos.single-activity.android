@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,12 +69,22 @@ public class SurfaceHost implements ISurfaceHost {
             //由于导航是新加到activity上的，所以要选中当前的模块
             if (view != null) {
                 int id = activity.getResources().getIdentifier(window.name(), "id", activity.getPackageName());
-                if (id == 0) {
-                    Log.e("Host", window.name() + "菜单不存在");
-                } else {
+                if (id > 0) {
                     MenuItem item = view.getMenu().findItem(id);
                     item.setChecked(true);
                 }
+
+                if(viewport.isBottomNavigationViewVisibility()) {
+                    view.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.INVISIBLE);
+                }
+                if(window.isBottomNavigationViewVisibility()) {
+                    view.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.INVISIBLE);
+                }
+
             }
         }
 

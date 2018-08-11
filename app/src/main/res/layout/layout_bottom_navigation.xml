@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.BottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+<cj.studio.netos.framework.thirty.BottomNavigationViewEx xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/module_navigation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"
     android:background="?android:attr/windowBackground"
-    app:menu="@menu/module_navigation">
+    android:visibility="visible"
+    app:itemIconTint="@color/selector_item_primary_color"
+    app:itemTextColor="@color/selector_item_primary_color"
+    app:menu="@menu/navigation_module">
 
-</android.support.design.widget.BottomNavigationView>
+</cj.studio.netos.framework.thirty.BottomNavigationViewEx>

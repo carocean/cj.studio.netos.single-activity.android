@@ -5,6 +5,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import cj.studio.netos.R;
 import cj.studio.netos.framework.INavigation;
@@ -12,6 +13,7 @@ import cj.studio.netos.framework.IViewport;
 import cj.studio.netos.framework.util.ForbiddenNavigationAnimation;
 
 public class DesktopViewport implements IViewport {
+    BottomNavigationView navigationView;
     public DesktopViewport() {
     }
 
@@ -23,11 +25,20 @@ public class DesktopViewport implements IViewport {
     @Override
     public BottomNavigationView setNavigation(INavigation navigation, Activity on) {
         BottomNavigationView view = on.findViewById(R.id.module_navigation);
-
+        if(view==null)return null;
         ForbiddenNavigationAnimation.disableShiftMode(view);
         view.setOnNavigationItemSelectedListener(navigation.onNavigationItemSelectedEvent(on));
-
+        navigationView=view;
         return view;
+    }
+    @Override
+    public BottomNavigationView navigationView() {
+        return navigationView;
+    }
+
+    @Override
+    public boolean isBottomNavigationViewVisibility() {
+        return true;
     }
 
     @Override
@@ -36,12 +47,13 @@ public class DesktopViewport implements IViewport {
     }
 
     @Override
-    public void setTitle(String title, Activity on) {
+    public void setToolbarInfo(String title, boolean displayHomeAsUpEnabled, Activity on) {
        Toolbar toolbar= on.findViewById(R.id.toolbar);
         if(toolbar!=null) {
             toolbar.setTitle(title);
             AppCompatActivity appon=(AppCompatActivity)on;
             appon.setSupportActionBar(toolbar);
+            appon.getSupportActionBar().setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled);
         }
         CollapsingToolbarLayout toolbarLayout= on.findViewById(R.id.toolbar_layout);
         if(toolbarLayout!=null){
@@ -50,7 +62,7 @@ public class DesktopViewport implements IViewport {
     }
 
     @Override
-    public boolean isShowMenuIcon() {
+    public boolean isShowToolbarMenuIcon() {
         return true;
     }
 }

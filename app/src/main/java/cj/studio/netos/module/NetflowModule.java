@@ -23,6 +23,7 @@ import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.IAxon;
 import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IModule;
+import cj.studio.netos.framework.INavigation;
 import cj.studio.netos.framework.IViewport;
 
 
@@ -32,6 +33,11 @@ public class NetflowModule extends Fragment implements IModule {
         List mDatas = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,1,2,3,4,5,6));
         return mDatas;
     }
+    @Override
+    public boolean isBottomNavigationViewVisibility() {
+        return true;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,16 +74,22 @@ public class NetflowModule extends Fragment implements IModule {
 
     @Override
     public void renderTo(IViewport viewport, Activity on, ICell cell) {
-        viewport.setTitle("网流", on);
+        viewport.setToolbarInfo("网流",true, on);
     }
 
     @Override
-    public boolean onViewportMenuInstall(MenuInflater menuInflater, Menu menu) {
+    public boolean onToolbarMenuInstall(MenuInflater menuInflater, Menu menu) {
         return true;
     }
 
     @Override
-    public boolean onViewportMenuSelected(MenuItem item) {
+    public boolean onToolbarMenuSelected(MenuItem item, ICell cell) {
+        INavigation navigation=cell.getService("$.workbench.navigation");
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                navigation.navigate("desktop");
+                break;
+        }
         return true;
     }
 
@@ -109,7 +121,7 @@ public class NetflowModule extends Fragment implements IModule {
         // 重写onCreateViewHolder方法，返回一个自定义的ViewHolder
         public MyHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
             // 填充布局
-            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_netflow_recycleritem, null);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_netflow, null);
             MyHolder holder = new MyHolder(view);
             return holder;
         }

@@ -27,26 +27,35 @@ public class ModuleViewport implements IViewport {
     }
 
     @Override
-    public BottomNavigationView setNavigation(INavigation navigation, Activity on) {
-        BottomNavigationView view= on.findViewById(R.id.module_navigation);
-        ForbiddenNavigationAnimation.disableShiftMode(view);
-        view.setOnNavigationItemSelectedListener(navigation.onNavigationItemSelectedEvent(on));
-
-        return view;
-    }
-
-    @Override
-    public boolean isShowMenuIcon() {
+    public boolean isBottomNavigationViewVisibility() {
         return true;
     }
 
     @Override
-    public void setTitle(String title, Activity on) {
+    public BottomNavigationView setNavigation(INavigation navigation, Activity on) {
+        BottomNavigationView view= on.findViewById(R.id.module_navigation);
+        ForbiddenNavigationAnimation.disableShiftMode(view);
+        view.setOnNavigationItemSelectedListener(navigation.onNavigationItemSelectedEvent(on));
+        this.view=view;
+        return view;
+    }
+    @Override
+    public BottomNavigationView navigationView() {
+        return view;
+    }
+    @Override
+    public boolean isShowToolbarMenuIcon() {
+        return true;
+    }
+
+    @Override
+    public void setToolbarInfo(String title, boolean displayHomeAsUpEnabled, Activity on) {
         Toolbar toolbar= on.findViewById(R.id.module_toolbar);
         if(toolbar!=null) {
             toolbar.setTitle(title);
             AppCompatActivity appon=(AppCompatActivity)on;
             appon.setSupportActionBar(toolbar);
+            appon.getSupportActionBar().setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled);
         }
     }
 }

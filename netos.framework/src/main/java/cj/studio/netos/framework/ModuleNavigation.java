@@ -6,11 +6,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.MenuItem;
 
-class Navigation implements INavigation {
+class ModuleNavigation implements INavigation {
     IServiceProvider site;
     OnNavigationItemSelectedEvent event;
 
-    public Navigation(IServiceProvider site) {
+    public ModuleNavigation(IServiceProvider site) {
         this.site = site;
     }
 

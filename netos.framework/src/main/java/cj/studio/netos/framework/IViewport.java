@@ -13,9 +13,13 @@ public interface IViewport {
 
     BottomNavigationView setNavigation(INavigation navigation, Activity on);
 
-    void setTitle(String title, Activity on);
+    void setToolbarInfo(String title, boolean displayHomeAsUpEnabled, Activity on);
 
-    boolean isShowMenuIcon();
+    boolean isShowToolbarMenuIcon();
 
     int displayViewId();
+
+    BottomNavigationView navigationView();
+
+    boolean isBottomNavigationViewVisibility();
 }

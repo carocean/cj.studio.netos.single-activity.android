@@ -12,7 +12,9 @@ public interface IWindow {
 
     void renderTo(IViewport viewport, Activity on, ICell cell);
 
-    boolean onViewportMenuInstall(MenuInflater menuInflater, Menu menu);
+    boolean onToolbarMenuInstall(MenuInflater menuInflater, Menu menu);
 
-    boolean onViewportMenuSelected(MenuItem item);
+    boolean onToolbarMenuSelected(MenuItem item, ICell cell);
+
+    boolean isBottomNavigationViewVisibility();
 }

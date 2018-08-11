@@ -5,4 +5,5 @@
     <string name="action_news">新闻</string>
     <string name="action_photo">照片</string>
     <string name="action_mine">\@我的</string>
+    <string name="readed">全部已读</string>
 </resources>

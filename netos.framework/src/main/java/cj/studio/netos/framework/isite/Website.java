@@ -41,6 +41,10 @@ class Website implements IWebsite {
         init();
     }
 
+    @Override
+    public boolean isBottomNavigationViewVisibility() {
+        return true;
+    }
 
     private void init() {
         initSettings(webView);
@@ -105,12 +109,12 @@ class Website implements IWebsite {
     }
 
     @Override
-    public boolean onViewportMenuInstall(MenuInflater menuInflater, Menu menu) {
+    public boolean onToolbarMenuInstall(MenuInflater menuInflater, Menu menu) {
         return false;
     }
 
     @Override
-    public boolean onViewportMenuSelected(MenuItem item) {
+    public boolean onToolbarMenuSelected(MenuItem item, ICell cell) {
         return false;
     }
 

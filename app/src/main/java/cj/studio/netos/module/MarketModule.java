@@ -15,6 +15,7 @@ import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.IAxon;
 import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IModule;
+import cj.studio.netos.framework.INavigation;
 import cj.studio.netos.framework.IViewport;
 
 
@@ -27,6 +28,12 @@ public class MarketModule extends Fragment implements IModule {
         View view = inflater.inflate(R.layout.fragment_market_module, container, false);
         return view;
     }
+
+    @Override
+    public boolean isBottomNavigationViewVisibility() {
+        return false;
+    }
+
     @Override
     public String name() {
         return "market";
@@ -40,26 +47,31 @@ public class MarketModule extends Fragment implements IModule {
 
     @Override
     public void renderTo(IViewport viewport, Activity on, ICell cell) {
-        viewport.setTitle("市场", on);
+        viewport.setToolbarInfo("市场",true, on);
     }
 
     @Override
-    public boolean onViewportMenuInstall(MenuInflater menuInflater, Menu menu) {
+    public boolean onToolbarMenuInstall(MenuInflater menuInflater, Menu menu) {
         return true;
     }
 
     @Override
-    public boolean onViewportMenuSelected(MenuItem item) {
+    public boolean onToolbarMenuSelected(MenuItem item, ICell cell) {
+        INavigation navigation=cell.getService("$.workbench.navigation");
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                navigation.navigate("desktop");
+                break;
+        }
         return true;
     }
 
     @Override
     public void input(Frame frame, ICell cell) {
-        IAxon axon=cell.axon();
-        Frame f=new Frame("test /test/ netos/1.0");
-        axon.output("netos.mpusher",f);
+        IAxon axon = cell.axon();
+        Frame f = new Frame("test /test/ netos/1.0");
+        axon.output("netos.mpusher", f);
     }
-
 
 
 }

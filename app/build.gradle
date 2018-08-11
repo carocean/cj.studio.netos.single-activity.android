@@ -16,6 +16,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -29,4 +30,5 @@ dependencies {
     implementation 'me.drakeet.multitype:multitype:3.4.4'
     implementation 'cn.yc:YCDialogLib:3.5'
     implementation project(':netos.framework')
+    implementation 'q.rorbin:badgeview:1.1.0'
 }

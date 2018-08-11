@@ -14,6 +14,7 @@ import cj.studio.netos.R;
 import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IModule;
+import cj.studio.netos.framework.INavigation;
 import cj.studio.netos.framework.IViewport;
 
 
@@ -24,8 +25,14 @@ public class GeoMicroblogModule extends Fragment implements IModule {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_geomicroblog_module, container, false);
+
         return view;
     }
+    @Override
+    public boolean isBottomNavigationViewVisibility() {
+        return true;
+    }
+
     @Override
     public void input(Frame frame, ICell cell) {
 
@@ -41,17 +48,23 @@ public class GeoMicroblogModule extends Fragment implements IModule {
 
     @Override
     public void renderTo(IViewport viewport, Activity on, ICell cell) {
-        viewport.setTitle("地微", on);
+        viewport.setToolbarInfo("地微",true, on);
     }
     @Override
-    public boolean onViewportMenuInstall(MenuInflater menuInflater, Menu menu) {
+    public boolean onToolbarMenuInstall(MenuInflater menuInflater, Menu menu) {
         menu.clear();
         menuInflater.inflate(R.menu.menu_geomicroblog,menu);
         return true;
     }
 
     @Override
-    public boolean onViewportMenuSelected(MenuItem item) {
+    public boolean onToolbarMenuSelected(MenuItem item, ICell cell) {
+        INavigation navigation=cell.getService("$.workbench.navigation");
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                navigation.navigate("desktop");
+                break;
+        }
         return true;
     }
 

@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.ICellsap;
 import cj.studio.netos.framework.IModule;
 import cj.studio.netos.framework.INeuron;
@@ -22,7 +23,6 @@ import cj.studio.netos.viewport.DesktopViewport;
 import cj.studio.netos.viewport.ModuleViewport;
 
 public class NetosActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +77,11 @@ public class NetosActivity extends AppCompatActivity {
         }
         ISurfaceHost host = workbench.getService("$.workbench.host");
         IViewport viewport = host.viewport(module.viewport());
-        if (viewport != null && viewport.isShowMenuIcon()) {
+        if (viewport != null && viewport.isShowToolbarMenuIcon()) {
             OverflowToolbarMenu.showIcon(menu);
         }
         MenuInflater menuInflater = getMenuInflater();
-        return module.onViewportMenuInstall(menuInflater, menu);
+        return module.onToolbarMenuInstall(menuInflater, menu);
     }
 
 
@@ -94,7 +94,8 @@ public class NetosActivity extends AppCompatActivity {
         if (module == null) {
             return super.onOptionsItemSelected(item);
         }
-        return module.onViewportMenuSelected(item);
+        ICell cell=neuron.cell();
+        return module.onToolbarMenuSelected(item,cell);
     }
 
 }

@@ -211,7 +211,7 @@ public final class Workbench implements IWorkbench, ICell {
         this.dendriteMap = new HashMap<>();
         this.viewportMap = new HashMap<>();
 
-        navigation=new Navigation(this);
+        navigation=new ModuleNavigation(this);
         selection=new Selection(this);
 
 

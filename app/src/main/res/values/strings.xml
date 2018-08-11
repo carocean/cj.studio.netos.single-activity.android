@@ -107,4 +107,8 @@
     <string name="action_news">新闻</string>
     <string name="action_photo">照片</string>
     <string name="action_mine">\@我的</string>
+    <string name="add_friend">添加好友</string>
+    <string name="create_group_chats">发起群聊</string>
+    <string name="readed">全部已读</string>
+    <string name="tips_badge_removed">提示标记已移除</string>
 </resources>

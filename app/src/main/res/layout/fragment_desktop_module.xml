@@ -1,12 +1,18 @@
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/message_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:nestedScrollingEnabled="false"
-    tools:context=".NetosActivity"
-    tools:listitem="@layout/message_recycleritem"
-    app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+    android:orientation="vertical">
 
-</android.support.v7.widget.RecyclerView>
+    <FrameLayout
+        android:id="@+id/desktop_region"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/region_message"></include>
+    </FrameLayout>
+
+
+</LinearLayout>
+
+

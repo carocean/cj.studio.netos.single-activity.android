@@ -26,6 +26,10 @@ public class Webapp extends Website implements IWebsite {
     public Webapp(WebView webView, IServiceProvider site) {
         super(webView, site);
     }
+    @Override
+    public boolean isBottomNavigationViewVisibility() {
+        return true;
+    }
 
     @Override
     protected void initSettings(WebView webView) {
