@@ -3,23 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cj.studio.netos.NetAreaActivity">
     <item
-        android:id="@+id/action_message"
+        android:id="@+id/messager"
         android:orderInCategory="100"
         android:title="@string/action_message"
         android:icon="@drawable/message"
         />
     <item
-        android:id="@+id/action_news"
+        android:id="@+id/news"
         android:orderInCategory="100"
         android:title="@string/action_news"
         android:icon="@drawable/news"/>
     <item
-        android:id="@+id/action_photo"
+        android:id="@+id/photo"
         android:orderInCategory="100"
         android:title="@string/action_photo"
         android:icon="@drawable/photo"/>
     <item
-        android:id="@+id/action_mine"
+        android:id="@+id/mine"
         android:orderInCategory="100"
         android:title="@string/action_mine"
         android:icon="@drawable/personal_zone"/>

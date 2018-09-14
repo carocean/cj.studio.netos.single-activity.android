@@ -29,11 +29,11 @@ import java.util.List;
  * 作    者：杨充
  * 版    本：1.0
  * 创建日期：2017/5/2
- * 描    述：DialogAdapter
+ * 描    述：DesktopPopupAdapter
  * 修订历史：
  * ================================================
  */
-class DialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+class DesktopPopupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
     private static final int HORIZONTAL = OrientationHelper.HORIZONTAL;
     private static final int VERTICAL = OrientationHelper.VERTICAL;
@@ -49,7 +49,7 @@ class DialogAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     private int topIcon;
     private int leftIcon;
 
-    DialogAdapter(Context context, List<CustomItem> mItems,  int orientation) {
+    DesktopPopupAdapter(Context context, List<CustomItem> mItems, int orientation) {
         setList(mItems);
         this.context = context;
         this.orientation = orientation;

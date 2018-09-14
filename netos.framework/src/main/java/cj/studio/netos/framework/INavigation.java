@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public interface INavigation {
-    void navigate(String navigateable);
+    boolean navigate(String navigateable);
 
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedEvent(Activity on);
 }

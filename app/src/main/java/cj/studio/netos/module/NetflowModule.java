@@ -3,6 +3,7 @@ package cj.studio.netos.module;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,10 +22,11 @@ import java.util.List;
 import cj.studio.netos.R;
 import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.IAxon;
-import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IModule;
 import cj.studio.netos.framework.INavigation;
+import cj.studio.netos.framework.IServiceProvider;
 import cj.studio.netos.framework.IViewport;
+import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
 
 
 public class NetflowModule extends Fragment implements IModule {
@@ -42,7 +44,7 @@ public class NetflowModule extends Fragment implements IModule {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_netflow_module, container, false);
+        View view= inflater.inflate(R.layout.module_netflow, container, false);
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.channels_recycler);
         mRecyclerView.setAdapter(new MyRecyclerAdapter(this.getContext(), initData()));
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
@@ -56,8 +58,8 @@ public class NetflowModule extends Fragment implements IModule {
     }
 
     @Override
-    public void input(Frame frame, ICell cell) {
-        IAxon axon=cell.axon();
+    public void input(Frame frame, IServiceProvider site) {
+        IAxon axon= site.getService(IAxon.class);
         Frame f=new Frame("test /test/ netos/1.0");
         axon.output("netos.mpusher",f);
     }
@@ -69,12 +71,17 @@ public class NetflowModule extends Fragment implements IModule {
 
     @Override
     public int viewport() {
-        return R.layout.layout_module_viewport;
+        return R.layout.viewport_module;
     }
 
     @Override
-    public void renderTo(IViewport viewport, Activity on, ICell cell) {
+    public void renderTo(IViewport viewport, Activity on, IServiceProvider site) {
         viewport.setToolbarInfo("网流",true, on);
+    }
+
+    @Override
+    public BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView, Activity on) {
+        return null;
     }
 
     @Override
@@ -83,8 +90,8 @@ public class NetflowModule extends Fragment implements IModule {
     }
 
     @Override
-    public boolean onToolbarMenuSelected(MenuItem item, ICell cell) {
-        INavigation navigation=cell.getService("$.workbench.navigation");
+    public boolean onToolbarMenuSelected(MenuItem item, IServiceProvider site) {
+        INavigation navigation= site.getService("$.workbench.navigation");
         switch (item.getItemId()) {
             case android.R.id.home:
                 navigation.navigate("desktop");

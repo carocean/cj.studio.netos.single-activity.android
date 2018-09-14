@@ -1,5 +1,7 @@
 package cj.studio.netos.framework.isite;
 
+import android.app.Activity;
+import android.support.design.widget.BottomNavigationView;
 import android.webkit.ConsoleMessage;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
@@ -9,8 +11,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import cj.studio.netos.framework.Frame;
-import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IServiceProvider;
+import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
 
 /**
  * - 页面资源可以完全在本地，因此需要安装
@@ -29,6 +31,11 @@ public class Webapp extends Website implements IWebsite {
     @Override
     public boolean isBottomNavigationViewVisibility() {
         return true;
+    }
+
+    @Override
+    public BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView, Activity on) {
+        return super.onResetNavigationMenu(bottomNavigationView, on);
     }
 
     @Override
@@ -52,8 +59,8 @@ public class Webapp extends Website implements IWebsite {
     }
 
     @Override
-    public void input(Frame frame, ICell cell) {
-        super.input(frame, cell);
+    public void input(Frame frame, IServiceProvider site) {
+        super.input(frame, site);
     }
 
 

@@ -34,7 +34,7 @@
         android:focusableInTouchMode="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activity_netos"
-        tools:showIn="@layout/layout_desktop_viewport">
+        tools:showIn="@layout/viewport_desktop">
 
 
         <FrameLayout
@@ -45,7 +45,7 @@
     </android.support.v4.widget.NestedScrollView>
 
 
-    <include layout="@layout/layout_bottom_navigation"></include>
+    <include layout="@layout/navigation_bottom"></include>
 
 
 </android.support.design.widget.CoordinatorLayout>

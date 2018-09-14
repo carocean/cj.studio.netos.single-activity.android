@@ -178,11 +178,12 @@ public final class Workbench implements IWorkbench, ICell {
         if (clazz.isAssignableFrom(IWorkbench.class)) {
             return (T) this;
         }
-
+        if (clazz.isAssignableFrom(IAxon.class)) {
+            return (T)this.axon;
+        }
         if (clazz.isAssignableFrom(IModule.class)) {
             return (T) moduleMap.values();
         }
-
 
         return site.getService(clazz);
     }

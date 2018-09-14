@@ -14,6 +14,7 @@ import android.view.View;
 import java.util.HashMap;
 import java.util.Map;
 
+import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
 import cj.studio.netos.framework.util.WindowStatusManager;
 
 public class SurfaceHost implements ISurfaceHost {
@@ -73,32 +74,38 @@ public class SurfaceHost implements ISurfaceHost {
                     MenuItem item = view.getMenu().findItem(id);
                     item.setChecked(true);
                 }
-
-                if(viewport.isBottomNavigationViewVisibility()) {
-                    view.setVisibility(View.VISIBLE);
-                }else{
-                    view.setVisibility(View.INVISIBLE);
-                }
-                if(window.isBottomNavigationViewVisibility()) {
-                    view.setVisibility(View.VISIBLE);
-                }else{
-                    view.setVisibility(View.INVISIBLE);
-                }
-
             }
         }
-
+        BottomNavigationView view = viewport.navigationView(activity);
+        if (view != null) {
+            if (viewport.isBottomNavigationViewVisibility()) {
+                view.setVisibility(View.VISIBLE);
+            } else {
+                view.setVisibility(View.GONE);
+            }
+            if (window.isBottomNavigationViewVisibility()) {
+                view.setVisibility(View.VISIBLE);
+            } else {
+                view.setVisibility(View.GONE);
+            }
+            BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = window.onResetNavigationMenu((BottomNavigationViewEx) view, activity);
+            if (onNavigationItemSelectedListener != null) {
+                view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+            }
+        }
         int containerViewId = viewport.displayViewId();
         if (containerViewId == 0) {
             Log.e("Log", window.name() + "的viewport缺少定义containerViewId");
             return;
         }
-        ICell cell=site.getService(IWorkbench.class);
-        window.renderTo(viewport, activity,cell);
+        ICell cell = site.getService(IWorkbench.class);
+
+        window.renderTo(viewport, activity, cell);
+
         activity.invalidateOptionsMenu();
 
         //切换fragment
-        switchFragment(containerViewId,window,selection,activity);
+        switchFragment(containerViewId, window, selection, activity);
     }
 
     private void switchFragment(int containerViewId, IWindow window, ISelection selection, Activity activity) {

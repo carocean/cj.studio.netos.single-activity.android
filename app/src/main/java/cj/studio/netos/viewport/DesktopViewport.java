@@ -1,39 +1,37 @@
 package cj.studio.netos.viewport;
 
 import android.app.Activity;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import cj.studio.netos.R;
 import cj.studio.netos.framework.INavigation;
 import cj.studio.netos.framework.IViewport;
+import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
 import cj.studio.netos.framework.util.ForbiddenNavigationAnimation;
 
 public class DesktopViewport implements IViewport {
-    BottomNavigationView navigationView;
     public DesktopViewport() {
     }
 
     @Override
     public int layout() {
-        return R.layout.layout_desktop_viewport;
+        return R.layout.viewport_desktop;
     }
 
     @Override
-    public BottomNavigationView setNavigation(INavigation navigation, Activity on) {
-        BottomNavigationView view = on.findViewById(R.id.module_navigation);
+    public BottomNavigationViewEx setNavigation(INavigation navigation, Activity on) {
+        BottomNavigationViewEx view = on.findViewById(R.id.module_navigation);
         if(view==null)return null;
         ForbiddenNavigationAnimation.disableShiftMode(view);
         view.setOnNavigationItemSelectedListener(navigation.onNavigationItemSelectedEvent(on));
-        navigationView=view;
         return view;
     }
     @Override
-    public BottomNavigationView navigationView() {
-        return navigationView;
+    public BottomNavigationViewEx navigationView( Activity on) {
+
+        return on.findViewById(R.id.module_navigation);
     }
 
     @Override

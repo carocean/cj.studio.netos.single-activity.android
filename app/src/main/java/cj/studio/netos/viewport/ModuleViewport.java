@@ -1,24 +1,22 @@
 package cj.studio.netos.viewport;
 
 import android.app.Activity;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import cj.studio.netos.R;
 import cj.studio.netos.framework.INavigation;
-import cj.studio.netos.framework.IServiceProvider;
 import cj.studio.netos.framework.IViewport;
+import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
 import cj.studio.netos.framework.util.ForbiddenNavigationAnimation;
 
 public class ModuleViewport implements IViewport {
-    BottomNavigationView view;
     public ModuleViewport() {
     }
 
     @Override
     public int layout() {
-        return R.layout.layout_module_viewport;
+        return R.layout.viewport_module;
     }
 
     @Override
@@ -32,17 +30,18 @@ public class ModuleViewport implements IViewport {
     }
 
     @Override
-    public BottomNavigationView setNavigation(INavigation navigation, Activity on) {
-        BottomNavigationView view= on.findViewById(R.id.module_navigation);
+    public BottomNavigationViewEx setNavigation(INavigation navigation, Activity on) {
+        BottomNavigationViewEx view= on.findViewById(R.id.module_navigation);
         ForbiddenNavigationAnimation.disableShiftMode(view);
         view.setOnNavigationItemSelectedListener(navigation.onNavigationItemSelectedEvent(on));
-        this.view=view;
         return view;
     }
     @Override
-    public BottomNavigationView navigationView() {
+    public BottomNavigationViewEx navigationView(Activity on) {
+        BottomNavigationViewEx view=on.findViewById(R.id.module_navigation);
         return view;
     }
+
     @Override
     public boolean isShowToolbarMenuIcon() {
         return true;

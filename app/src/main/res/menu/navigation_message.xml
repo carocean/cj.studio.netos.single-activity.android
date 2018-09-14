@@ -4,13 +4,16 @@
         android:id="@+id/readed"
         android:checked="true"
         android:icon="@drawable/ic_readed"
+        android:orderInCategory="1"
         android:title="@string/readed" />
     <item
         android:id="@+id/add_friend"
         android:icon="@drawable/ic_desktop_network_24dp"
+        android:orderInCategory="2"
         android:title="@string/add_friend" />
     <item
         android:id="@+id/create_group_chats"
+        android:orderInCategory="3"
         android:icon="@drawable/ic_netflow_blank_24dp"
         android:title="@string/create_group_chats" />
 

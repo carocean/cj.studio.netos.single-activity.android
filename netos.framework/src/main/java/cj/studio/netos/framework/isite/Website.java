@@ -2,6 +2,7 @@ package cj.studio.netos.framework.isite;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,10 +17,10 @@ import android.webkit.WebViewClient;
 import java.util.Set;
 
 import cj.studio.netos.framework.Frame;
-import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.IServiceProvider;
 import cj.studio.netos.framework.IViewport;
 import cj.studio.netos.framework.isite.system.SiteInfoFunctions;
+import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
 
 /**
  * - 页面和资源在云端
@@ -39,6 +40,11 @@ class Website implements IWebsite {
         this.webView = webView;
         this.site = site;
         init();
+    }
+
+    @Override
+    public BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView, Activity on) {
+        return null;
     }
 
     @Override
@@ -104,7 +110,7 @@ class Website implements IWebsite {
     }
 
     @Override
-    public void renderTo(IViewport viewport, Activity on, ICell cell) {
+    public void renderTo(IViewport viewport, Activity on, IServiceProvider site) {
 
     }
 
@@ -114,13 +120,13 @@ class Website implements IWebsite {
     }
 
     @Override
-    public boolean onToolbarMenuSelected(MenuItem item, ICell cell) {
+    public boolean onToolbarMenuSelected(MenuItem item, IServiceProvider site) {
         return false;
     }
 
 
     @Override
-    public void input(Frame frame, ICell cell) {
+    public void input(Frame frame, IServiceProvider site) {
         //输出到js中
         String json=frame.toJson();
 //        webView.loadData();

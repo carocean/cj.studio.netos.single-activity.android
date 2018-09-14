@@ -15,16 +15,17 @@ class ModuleNavigation implements INavigation {
     }
 
     @Override
-    public void navigate(String navigateable) {
+    public boolean navigate(String navigateable) {
         IModule module = site.getService("$.module." + navigateable);
         ISelection selection = site.getService("$.workbench.selection");
         if(selection.selectedModule()!=null&&selection.selectedModule().equals(module)){
-            return;
+            return false;
         }
         ISurfaceHost host = site.getService("$.workbench.host");
 
         host.showWindow(module);
         selection.setSelectedModule(module);
+        return true;
     }
 
     @Override
@@ -50,9 +51,12 @@ class ModuleNavigation implements INavigation {
                 if(pos>-1){
                     name=name.substring(pos+1,name.length());
                 }
-                navigate(name);
+                if(navigate(name)) {
 //                item.setChecked(true);
-                return true;
+                    return true;
+                }else{
+                    return false;
+                }
             } catch (Exception e) {
                 Log.e("Nav", e.getMessage());
                 return false;

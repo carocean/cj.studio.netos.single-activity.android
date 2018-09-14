@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -81,6 +80,8 @@ public class BottomNavigationViewEx extends BottomNavigationView {
             e.printStackTrace();
         }
     }
+
+
 
     /**
      * 添加消息提示框
@@ -565,6 +566,12 @@ public class BottomNavigationViewEx extends BottomNavigationView {
         mMyOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener(listener);
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+
+        super.setVisibility(visibility);
+    }
+
     /**
      * get private mMenuView
      *
@@ -582,8 +589,9 @@ public class BottomNavigationViewEx extends BottomNavigationView {
      * @return
      */
     public BottomNavigationItemView[] getBottomNavigationItemViews() {
-        if (null != mButtons)
+        if (null != mButtons) {
             return mButtons;
+        }
         /*
          * 1 private final BottomNavigationMenuView mMenuView;
          * 2 private BottomNavigationItemView[] mButtons;
@@ -600,7 +608,15 @@ public class BottomNavigationViewEx extends BottomNavigationView {
      * @return
      */
     public BottomNavigationItemView getBottomNavigationItemView(int position) {
-        return getBottomNavigationItemViews()[position];
+       BottomNavigationItemView[] views= getBottomNavigationItemViews();
+       if(views==null)return null;
+       for(int i=0;i<views.length;i++){
+           BottomNavigationItemView view=views[i];
+           if(position==view.getItemPosition()){
+               return view;
+           }
+       }
+        return null;
     }
 
     /**
@@ -898,6 +914,26 @@ public class BottomNavigationViewEx extends BottomNavigationView {
         OnNavigationItemSelectedListener listener = getOnNavigationItemSelectedListener();
         mMyOnNavigationItemSelectedListener = new MyOnNavigationItemSelectedListener(viewPager, this, smoothScroll, listener);
         super.setOnNavigationItemSelectedListener(mMyOnNavigationItemSelectedListener);
+    }
+
+    /**
+     * 清除菜单项并将badgeview持有的项菜项清除，如果不清的话，导航菜单将报父容器已存在菜单项
+     */
+    public void clearMenu() {
+        getMenu().clear();
+        View[] views=getBottomNavigationItemViews();
+        if(views!=null) {
+            for (int i = 0; i < views.length; i++) {
+                View view = views[i];
+                ViewGroup parent = (ViewGroup) view.getParent();
+                if(parent!=null&&parent.toString().startsWith("q.rorbin.badgeview.QBadgeView$BadgeContainer")){
+                    parent.removeView(view);
+                }else{
+                    removeView(view);
+                }
+
+            }
+        }
     }
 
     /**
