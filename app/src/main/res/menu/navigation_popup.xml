@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/netflow"
-        android:checked="true"
         android:icon="@drawable/ic_netflow_blank_24dp"
         android:title="@string/module_netflow" />
 

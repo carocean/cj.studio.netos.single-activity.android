@@ -2,7 +2,6 @@ package cj.studio.netos.module;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,8 @@ import cj.studio.netos.framework.IModule;
 import cj.studio.netos.framework.INavigation;
 import cj.studio.netos.framework.IServiceProvider;
 import cj.studio.netos.framework.IViewport;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
+import cj.studio.netos.framework.IWidget;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 import cj.studio.netos.module.adapter.MarketGroupListAdapter;
 import cj.studio.netos.ui.RecycleViewDivider;
 
@@ -58,11 +58,11 @@ public class MarketModule extends Fragment implements IModule {
     }
 
     @Override
-    public void renderTo(IViewport viewport, Activity on, IServiceProvider site) {
+    public void onViewport(IViewport viewport, Activity on, IServiceProvider site) {
         viewport.setToolbarInfo("商机",true, on);
     }
     @Override
-    public BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView, Activity on) {
+    public CJBottomNavigationView.OnCheckedChangeListener onResetNavigationMenu(CJBottomNavigationView bottomNavigationView, Activity on) {
         return null;
     }
     @Override
@@ -88,7 +88,10 @@ public class MarketModule extends Fragment implements IModule {
         axon.output("netos.mpusher", f);
     }
 
-
+    @Override
+    public IWidget widget(String navigateable) {
+        return null;
+    }
 
 
 }

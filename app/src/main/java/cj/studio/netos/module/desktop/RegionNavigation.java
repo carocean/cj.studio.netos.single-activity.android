@@ -1,17 +1,22 @@
 package cj.studio.netos.module.desktop;
 
 import android.app.Activity;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 
+import cj.studio.netos.framework.IDesktopRegion;
+import cj.studio.netos.framework.IHistory;
 import cj.studio.netos.framework.INavigation;
+import cj.studio.netos.framework.IRegionSelection;
+import cj.studio.netos.framework.ISelection;
 import cj.studio.netos.framework.IServiceProvider;
+import cj.studio.netos.framework.ISurfaceHost;
 import cj.studio.netos.framework.IViewport;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
+import cj.studio.netos.framework.Memento;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
 public class RegionNavigation implements INavigation {
     FragmentManager manager;
@@ -20,13 +25,14 @@ public class RegionNavigation implements INavigation {
     IViewport viewport;
     IServiceProvider site;
     Activity on;
-    public RegionNavigation(IViewport viewport, IServiceProvider site, Activity on, int desktop_region) {
+    public RegionNavigation(IViewport viewport, IServiceProvider site,  int desktop_region) {
         this.desktop_region=desktop_region;
         this.selection=site.getService("$.region.selection");
         this.manager=site.getService(FragmentManager.class);
         this.viewport=viewport;
         this.site=site;
-        this.on=on;
+       ISurfaceHost host= site.getService("$.workbench.host");
+       this.on=(Activity)host.owner();
     }
 
     @Override
@@ -35,10 +41,13 @@ public class RegionNavigation implements INavigation {
         if(region==null){
             return false;
         }
-        BottomNavigationViewEx bottomNavigationView=viewport.navigationView(on);
-        BottomNavigationView.OnNavigationItemSelectedListener listene=region.onResetNavigationMenu(bottomNavigationView,on);
+        ISelection sel=site.getService("$.workbench.selection");
+
+
+        CJBottomNavigationView bottomNavigationView=viewport.navigationView(on);
+        CJBottomNavigationView.OnCheckedChangeListener listene=region.onResetNavigationMenu(bottomNavigationView,on);
 //        if(listene!=null) {//注掉，不论listene是不是null都设置，就把之前的bottomNavigationView事件给冲掉
-            bottomNavigationView.setOnNavigationItemSelectedListener(listene);
+            bottomNavigationView.setOnCheckedChangeListener(listene);
 //        }
         if(region.isBottomNavigationViewVisibility()){
             bottomNavigationView.setVisibility(View.VISIBLE);
@@ -46,32 +55,51 @@ public class RegionNavigation implements INavigation {
             bottomNavigationView.setVisibility(View.GONE);
         }
 
-        region.renderTo(viewport,on,site);
+        region.onViewport(viewport,on,site);
         on.invalidateOptionsMenu();
-        switchFragment(desktop_region,region,selection);
+
+        switchFragment(desktop_region,region);
+        sel.setCurrentViewport(viewport);
+
+        IHistory history = site.getService("$.workbench.history");
+        if("messager".equals(navigateable)){
+            history.clear();
+        }else {
+            if (selection.selectRegion() != null) {
+                Memento memento = new Memento(String.format("/desktop/%s.region", selection.selectRegion().name()));
+                history.redo(memento);
+            }
+        }
+
         selection.setSelectRegion(region);
+        sel.setSelectedRegion(region);
         return true;
     }
-    private void switchFragment(int containerViewId, IDesktopRegion region, IRegionSelection selection) {
+    private void switchFragment(int containerViewId, IDesktopRegion region) {
         Fragment fragment = (Fragment) region;
         FragmentTransaction transaction = manager.beginTransaction();
         try {
-            Fragment prev = (Fragment) selection.selectRegion();
-            if (prev != null) {
-                transaction.hide(prev);
-            }
-            if (fragment.isAdded()) {
-                transaction.show(fragment);
-            } else {
-                transaction.add(containerViewId, fragment).show(fragment);
-            }
-            transaction.commit();
+//            Fragment prev = (Fragment) selection.selectRegion();
+//            if (prev != null) {
+//                transaction.hide(prev);
+//            }
+//            if (fragment.isAdded()) {
+//                if(fragment.isHidden()) {
+//                    transaction.show(fragment);
+//                }
+//            } else {
+//                transaction.add(containerViewId, fragment).show(fragment);
+//            }
+            //使fragment每次都执行oncreateView
+            transaction.replace(containerViewId,fragment).show(fragment);
+            transaction.commitAllowingStateLoss();
         } catch (Exception e) {
             Log.e("Host", e.getMessage());
         }
     }
     @Override
-    public BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedEvent(Activity on) {
+    public CJBottomNavigationView.OnCheckedChangeListener onNavigationItemSelectedEvent(Activity on) {
         return null;
     }
+
 }

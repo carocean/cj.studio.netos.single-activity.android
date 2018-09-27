@@ -2,7 +2,6 @@ package cj.studio.netos.framework.isite;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,8 +18,9 @@ import java.util.Set;
 import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.IServiceProvider;
 import cj.studio.netos.framework.IViewport;
+import cj.studio.netos.framework.IWidget;
 import cj.studio.netos.framework.isite.system.SiteInfoFunctions;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
 /**
  * - 页面和资源在云端
@@ -43,7 +43,7 @@ class Website implements IWebsite {
     }
 
     @Override
-    public BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView, Activity on) {
+    public CJBottomNavigationView.OnCheckedChangeListener onResetNavigationMenu(CJBottomNavigationView bottomNavigationView, Activity on) {
         return null;
     }
 
@@ -110,7 +110,7 @@ class Website implements IWebsite {
     }
 
     @Override
-    public void renderTo(IViewport viewport, Activity on, IServiceProvider site) {
+    public void onViewport(IViewport viewport, Activity on, IServiceProvider site) {
 
     }
 
@@ -133,6 +133,10 @@ class Website implements IWebsite {
         webView.loadUrl(String.format("javascript:(function(){var json=%s;var jobj=eval(json);$.input(jobj);})()",json));
     }
 
+    @Override
+    public IWidget widget(String navigateable) {
+        return null;
+    }
 
 
     @Override

@@ -2,10 +2,10 @@ package cj.studio.netos.module;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,16 +19,16 @@ import java.util.Map;
 import cj.studio.netos.R;
 import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.IAxon;
-import cj.studio.netos.framework.ICell;
+import cj.studio.netos.framework.IDesktopRegion;
+import cj.studio.netos.framework.ILocation;
 import cj.studio.netos.framework.IModule;
 import cj.studio.netos.framework.INavigation;
+import cj.studio.netos.framework.IRegionSelection;
 import cj.studio.netos.framework.IServiceProvider;
-import cj.studio.netos.framework.IServiceSite;
 import cj.studio.netos.framework.IViewport;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
+import cj.studio.netos.framework.IWidget;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 import cj.studio.netos.module.desktop.FloatingActionButtonOnclickListener;
-import cj.studio.netos.module.desktop.IDesktopRegion;
-import cj.studio.netos.module.desktop.IRegionSelection;
 import cj.studio.netos.module.desktop.RegionNavigation;
 import cj.studio.netos.module.desktop.RegionSelection;
 import cj.studio.netos.module.desktop.region.MessagerRegion;
@@ -42,6 +42,16 @@ public class DesktopModule extends Fragment implements IModule {
     IViewport viewport;
     IServiceProvider site;
     INavigation navigation;
+
+
+    @Override
+    public void onViewport(IViewport viewport, final Activity on, IServiceProvider site) {
+        this.viewport = viewport;
+        if(this.site==null) {
+            this.site = new DesktopServiceProvider(site);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,11 +59,32 @@ public class DesktopModule extends Fragment implements IModule {
         //如果不指定attachToRoot=false或inflater.inflate(R.layout.region_message,null)，则报此子fragment在父view中已存在的错误，该错误产生时其parent
         //ViewGroup parent = (ViewGroup) view.getParent();parent显示为不为null,必须parent显示为不为null为null时才不报错
         //以上错误的真实原因是：attachToRoot默认为true，会自动将当前fragment挂载到root上，所以再inflate相应的view上时会报其父视图中已存在此fragment的错误，因此attachToRoot必须设为false
+//        for(int i=0;i<container.getChildCount();i++){
+//            View v=container.getChildAt(i);
+//            Log.i("...",v.toString());
+//        }
+        Log.i("......000",container+"");
+        selection = new RegionSelection();
+
+        regionMap = new HashMap<>();
+        registerDesktopRegion();
+
+        FloatingActionButton fab = getActivity().findViewById(R.id.desktop_fab);
+//        fab.setBackgroundColor(0);
+//        fab.setBackgroundResource(R.drawable.face);
+        fab.setImageResource(R.mipmap.ic_face);
+        floatingActionButtonOnclickListener = new FloatingActionButtonOnclickListener(getActivity(), site);
+        fab.setOnClickListener(floatingActionButtonOnclickListener);
+
         View view = inflater.inflate(R.layout.module_desktop, container, false);
 
-        navigation = new RegionNavigation(viewport, site, getActivity(),  R.id.desktop_region);
+        navigation = new RegionNavigation(viewport, site,   R.id.desktop_region);
+        ILocation location= site.getService("$.workbench.location");
+        location.setRegionNav(navigation);
+
+        floatingActionButtonOnclickListener.setRegionNav(navigation);
+
         navigation.navigate("messager");
-        floatingActionButtonOnclickListener.setNavigation(navigation);
         return view;
     }
 
@@ -78,6 +109,11 @@ public class DesktopModule extends Fragment implements IModule {
     }
 
     @Override
+    public IWidget widget(String navigateable) {
+        return null;
+    }
+
+    @Override
     public String name() {
         return "desktop";
     }
@@ -87,27 +123,9 @@ public class DesktopModule extends Fragment implements IModule {
         return R.layout.viewport_desktop;
     }
 
-    @Override
-    public void renderTo(IViewport viewport, final Activity on, IServiceProvider site) {
-        this.viewport = viewport;
-        if(this.site==null) {
-            this.site = new DesktopServiceProvider(site);
-        }
-        selection = new RegionSelection();
-
-        regionMap = new HashMap<>();
-        registerDesktopRegion();
-
-        FloatingActionButton fab = on.findViewById(R.id.desktop_fab);
-//        fab.setBackgroundColor(0);
-//        fab.setBackgroundResource(R.drawable.face);
-        fab.setImageResource(R.mipmap.ic_face);
-        floatingActionButtonOnclickListener = new FloatingActionButtonOnclickListener(on, site);
-        fab.setOnClickListener(floatingActionButtonOnclickListener);
-    }
 
     @Override
-    public BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView, final Activity on) {
+    public CJBottomNavigationView.OnCheckedChangeListener onResetNavigationMenu(CJBottomNavigationView bottomNavigationView, final Activity on) {
 //        bottomNavigationView.getMenu().clearMenu();//擦除全局菜单
 //        bottomNavigationView.inflateMenu(R.menu.navigation_message);
         return null;

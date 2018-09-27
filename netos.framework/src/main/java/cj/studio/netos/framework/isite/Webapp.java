@@ -1,7 +1,6 @@
 package cj.studio.netos.framework.isite;
 
 import android.app.Activity;
-import android.support.design.widget.BottomNavigationView;
 import android.webkit.ConsoleMessage;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
@@ -12,7 +11,8 @@ import android.webkit.WebViewClient;
 
 import cj.studio.netos.framework.Frame;
 import cj.studio.netos.framework.IServiceProvider;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
+import cj.studio.netos.framework.IWidget;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
 /**
  * - 页面资源可以完全在本地，因此需要安装
@@ -34,7 +34,12 @@ public class Webapp extends Website implements IWebsite {
     }
 
     @Override
-    public BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView, Activity on) {
+    public IWidget widget(String navigateable) {
+        return super.widget(navigateable);
+    }
+
+    @Override
+    public CJBottomNavigationView.OnCheckedChangeListener onResetNavigationMenu(CJBottomNavigationView bottomNavigationView, Activity on) {
         return super.onResetNavigationMenu(bottomNavigationView, on);
     }
 

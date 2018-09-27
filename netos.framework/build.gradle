@@ -31,4 +31,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.2.4'
     implementation 'com.android.support:design:27.1.1'
     implementation 'q.rorbin:badgeview:1.1.0'
+    api 'com.nineoldandroids:library:2.4.0'
+    api 'com.dsiner.lib:xrv:1.1.2'
 }

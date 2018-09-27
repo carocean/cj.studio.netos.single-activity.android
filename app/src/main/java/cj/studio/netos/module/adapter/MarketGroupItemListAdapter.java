@@ -35,7 +35,7 @@ public class MarketGroupItemListAdapter extends RecyclerView.Adapter {
 
         public MarketGroupItemListHolder(View view) {
             super(view);
-            textView = view.findViewById(R.id.item_name);
+            textView = view.findViewById(R.id.item_title);
         }
     }
 }

@@ -2,7 +2,7 @@ package cj.studio.netos.framework;
 
 import android.app.Activity;
 
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
 /**
  * 视口是与设备相关的一个矩形区域<br>
@@ -11,7 +11,7 @@ import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
 public interface IViewport {
     int layout();
 
-    BottomNavigationViewEx setNavigation(INavigation navigation, Activity on);
+    CJBottomNavigationView setNavigation(INavigation navigation, Activity on);
 
     void setToolbarInfo(String title, boolean displayHomeAsUpEnabled, Activity on);
 
@@ -19,6 +19,6 @@ public interface IViewport {
 
     int displayViewId();
 
-    BottomNavigationViewEx navigationView(Activity on);
+    CJBottomNavigationView navigationView(Activity on);
     boolean isBottomNavigationViewVisibility();
 }

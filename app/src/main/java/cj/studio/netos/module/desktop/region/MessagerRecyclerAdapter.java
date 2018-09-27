@@ -2,24 +2,29 @@ package cj.studio.netos.module.desktop.region;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import cj.studio.netos.R;
+import cj.studio.netos.framework.INavigation;
+import cj.studio.netos.framework.IServiceProvider;
 
 public class MessagerRecyclerAdapter extends RecyclerView.Adapter<MessagerRecyclerAdapter.MyHolder> {
 
         private Context mContext;
         private List<String> mDatas;
-
-        public MessagerRecyclerAdapter(Context context, List<String> datas) {
+        IServiceProvider site;
+        public MessagerRecyclerAdapter(IServiceProvider site,Context context, List<String> datas) {
             super();
             this.mContext = context;
             this.mDatas = datas;
+            this.site=site;
         }
 
         @Override
@@ -49,9 +54,18 @@ public class MessagerRecyclerAdapter extends RecyclerView.Adapter<MessagerRecycl
 
             private TextView session_summary;
 
-            public MyHolder(View view) {
+            public MyHolder(final View view) {
                 super(view);
                 session_summary = (TextView) view.findViewById(R.id.session_summary);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.i("item selected",session_summary.getText()+"");
+                        INavigation navigation=site.getService("$.workbench.navigation.widget");
+                        navigation.navigate("/messagerWidget");
+                        Toast.makeText(view.getContext(),session_summary.getText()+"",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
         }

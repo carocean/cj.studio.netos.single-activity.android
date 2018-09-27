@@ -3,8 +3,6 @@ package cj.studio.netos.module.desktop;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -14,8 +12,8 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pedaily.yc.ycdialoglib.bottomLayout.BottomDialogFragment;
 import com.pedaily.yc.ycdialoglib.bottomMenu.CustomBottomDialog;
@@ -26,23 +24,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cj.studio.netos.R;
-import cj.studio.netos.framework.ICell;
 import cj.studio.netos.framework.ICellsap;
 import cj.studio.netos.framework.INavigation;
 import cj.studio.netos.framework.IServiceProvider;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
-import cj.studio.netos.framework.util.ForbiddenNavigationAnimation;
 import cj.studio.netos.framework.util.WindowUtil;
-import q.rorbin.badgeview.Badge;
+import cj.studio.netos.framework.view.BadgeRadioButton;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
 public class FloatingActionButtonOnclickListener implements View.OnClickListener {
     private final IServiceProvider site;
     AppCompatActivity on;
-    INavigation navigation;
-
+    INavigation regionNav;
     public FloatingActionButtonOnclickListener(Activity on, IServiceProvider site) {
         this.on = (AppCompatActivity) on;
         this.site = site;
+    }
+
+    public void setRegionNav(INavigation regionNav) {
+        this.regionNav = regionNav;
     }
 
     @Override
@@ -58,9 +57,6 @@ public class FloatingActionButtonOnclickListener implements View.OnClickListener
                 .show();
     }
 
-    public void setNavigation(INavigation navigation) {
-        this.navigation = navigation;
-    }
 
     class MyViewListener extends Dialog implements BottomDialogFragment.ViewListener {
         private final ICellsap cellsap;
@@ -105,15 +101,12 @@ public class FloatingActionButtonOnclickListener implements View.OnClickListener
                 @Override
                 public void click(CustomItem item) {
                     Log.i("切换desktop region", item.getTitle());
-                    if (navigation == null) {
-                        return;
-                    }
                     String name = on.getResources().getResourceName(item.getId());
                     int spliter = name.indexOf("/");
                     if (spliter > -1) {
                         name = name.substring(spliter + 1, name.length());
                     }
-                    if(navigation.navigate(name)){
+                    if(regionNav.navigate(name)){
                         dialog.dismiss();
                     }
                 }
@@ -121,30 +114,16 @@ public class FloatingActionButtonOnclickListener implements View.OnClickListener
 
             recyclerView.setAdapter(mAdapter);
 
-            final BottomNavigationViewEx bottomNavigationView = v.findViewById(R.id.popup_navigation);
-            ForbiddenNavigationAnimation.disableShiftMode(bottomNavigationView);
-            if (bottomNavigationView.getMenu().size() > 0) {
-                bottomNavigationView.setIconTintList(0, on.getResources().getColorStateList(R.color.colorGray));
-                bottomNavigationView.setTextTintList(0, on.getResources().getColorStateList(R.color.colorGray));
-                bottomNavigationView.setBadgeAt(0, 25, 20, 0, on, new Badge.OnDragStateChangedListener() {
-                    @Override
-                    public void onDragStateChanged(int dragState, Badge badge, View targetView) {
-                        if (Badge.OnDragStateChangedListener.STATE_SUCCEED == dragState)
-                            Toast.makeText(on, R.string.tips_badge_removed, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            final CJBottomNavigationView bottomNavigationView = v.findViewById(R.id.popup_navigation);
+            if (bottomNavigationView.getChildCount() > 0) {
+                BadgeRadioButton badgeRadioButton=(BadgeRadioButton)bottomNavigationView.getChildAt(0);
+                badgeRadioButton.setBadgeNumber(22);
             }
             final INavigation navigation = site.getService("$.workbench.navigation");
-            bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            bottomNavigationView.setOnCheckedChangeListener(new CJBottomNavigationView.OnCheckedChangeListener() {
                 @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Log.i("CustomItem", item.getTitle() + "");
-                    int pos = bottomNavigationView.getMenuItemPosition(item);
-                    if (pos == 0) {
-                        bottomNavigationView.setIconTintList(0, on.getResources().getColorStateList(R.color.selector_item_primary_color));
-                        bottomNavigationView.setTextTintList(0, on.getResources().getColorStateList(R.color.selector_item_primary_color));
-                    }
-                    String name = on.getResources().getResourceName(item.getItemId());
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    String name = on.getResources().getResourceName(checkedId);
                     int spliter = name.indexOf("/");
                     if (spliter > -1) {
                         name = name.substring(spliter + 1, name.length());
@@ -152,8 +131,10 @@ public class FloatingActionButtonOnclickListener implements View.OnClickListener
                     if(navigation.navigate(name)) {
                         dialog.dismiss();
                     }
-                    return true;
+                    return ;
                 }
+
+
             });
         }
     }

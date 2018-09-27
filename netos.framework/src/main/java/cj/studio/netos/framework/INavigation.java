@@ -1,11 +1,8 @@
 package cj.studio.netos.framework;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.view.MenuItem;
 
-import java.util.List;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
 /**
  * Created by caroceanjofers on 2018/2/3.
@@ -14,5 +11,5 @@ import java.util.List;
 public interface INavigation {
     boolean navigate(String navigateable);
 
-    BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedEvent(Activity on);
+    CJBottomNavigationView.OnCheckedChangeListener onNavigationItemSelectedEvent(Activity on);
 }

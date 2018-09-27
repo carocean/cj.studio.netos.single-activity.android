@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/test1"
-        android:checked="true"
         android:icon="@drawable/ic_readed"
         android:title="test1" />
     <item

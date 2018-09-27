@@ -1,35 +1,34 @@
 package cj.studio.netos.module.desktop.region;
 
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
-import android.view.MenuItem;
+import android.widget.RadioGroup;
 
-import cj.studio.netos.R;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
+import cj.studio.netos.framework.view.BadgeRadioButton;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
-public class MessagerOnNavigationSelectListener implements BottomNavigationView.OnNavigationItemSelectedListener {
-        BottomNavigationViewEx bottomNavigationView;
-        Resources resources;
-        public MessagerOnNavigationSelectListener(BottomNavigationViewEx bottomNavigationView, Resources resources) {
-            this.bottomNavigationView=bottomNavigationView;
-            this.resources=resources;
+public class MessagerOnNavigationSelectListener implements CJBottomNavigationView.OnCheckedChangeListener {
+    Resources resources;
+
+    public MessagerOnNavigationSelectListener( Resources resources) {
+        this.resources = resources;
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+        String name = resources.getResourceName(checkedId);
+        int spliter = name.indexOf("/");
+        if (spliter > -1) {
+            name = name.substring(spliter + 1, name.length());
         }
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            int pos=bottomNavigationView.getMenuItemPosition(item);
-            if(pos==0){
-                bottomNavigationView.setIconTintList(0,resources.getColorStateList(R.color.selector_item_primary_color));
-                bottomNavigationView.setTextTintList(0,resources.getColorStateList(R.color.selector_item_primary_color));
-            }
-            String name=resources.getResourceName(item.getItemId());
-            int spliter=name.indexOf("/");
-            if(spliter>-1){
-                name=name.substring(spliter+1,name.length());
-            }
-            Log.i("test", "......." + item.getTitle()+"..."+name);
-            return true;
+        Log.i("test", "......." + "..." + name);
+        CJBottomNavigationView view=(CJBottomNavigationView)group;
+        if(view.getChildCount()>0){
+            BadgeRadioButton badgeRadioButton=(BadgeRadioButton)view.getChildAt(0);
+            badgeRadioButton.setBadgeNumber(-1);
         }
     }
+
+
+}

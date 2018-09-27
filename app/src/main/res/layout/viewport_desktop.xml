@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/desktop_viewport"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false">
@@ -52,9 +53,7 @@
         android:layout_marginBottom="56dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activity_netos"
-        tools:showIn="@layout/viewport_desktop">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <LinearLayout

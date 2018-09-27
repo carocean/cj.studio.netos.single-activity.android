@@ -1,7 +1,6 @@
 package cj.studio.netos.module.adapter;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,8 +38,9 @@ public class MarketGroupListAdapter extends RecyclerView.Adapter {
                 RecyclerView.Adapter child=new MarketGroupItemListAdapter();
                 recyclerView.setAdapter(child);
 
-                recyclerView.addItemDecoration(new DividerItemDecoration(view.getContext(),DividerItemDecoration.VERTICAL));
+                recyclerView.addItemDecoration(new MyDividerItemDecoration(view.getContext(),60));
             }
 
         }
+
     }

@@ -2,34 +2,35 @@ package cj.studio.netos.module.desktop.region;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.view.menu.MenuView;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cj.studio.netos.R;
 import cj.studio.netos.framework.Frame;
+import cj.studio.netos.framework.IDesktopRegion;
 import cj.studio.netos.framework.IServiceProvider;
 import cj.studio.netos.framework.IViewport;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
-import cj.studio.netos.module.desktop.IDesktopRegion;
-import q.rorbin.badgeview.Badge;
+import cj.studio.netos.framework.IWidget;
+import cj.studio.netos.framework.view.BadgeRadioButton;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
+import cj.studio.netos.module.adapter.MyDividerItemDecoration;
 
 
 public class MessagerRegion extends Fragment implements IDesktopRegion {
+    IServiceProvider site;
+    Map<String,IWidget> widgetMap;
     private List initData() {
         List mDatas = new ArrayList<String>(Arrays.asList("网域桌面模拟AppleStore首页", "所有信息均由应用发布", "为不当中国人 台留学生向蔡英文筹钱告挪威", "网域桌面模拟AppleStore首页", "所有信息均由应用发布", "为不当中国人 台留学生向蔡英文筹钱告挪威", "网域桌面模拟AppleStore首页", "所有信息均由应用发布", "为不当中国人 台留学生向蔡英文筹钱告挪威", "网域桌面模拟AppleStore首页", "所有信息均由应用发布", "为不当中国人 台留学生向蔡英文筹钱告挪威"));
         return mDatas;
@@ -45,8 +46,8 @@ public class MessagerRegion extends Fragment implements IDesktopRegion {
         View view = inflater.inflate(R.layout.region_message, container, false);
 
         RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.message_recycler);
-        mRecyclerView.setAdapter(new MessagerRecyclerAdapter(this.getContext(), initData()));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
+        mRecyclerView.setAdapter(new MessagerRecyclerAdapter(site,this.getContext(), initData()));
+        mRecyclerView.addItemDecoration(new MyDividerItemDecoration(this.getContext(),55));
         return view;
     }
 
@@ -62,7 +63,11 @@ public class MessagerRegion extends Fragment implements IDesktopRegion {
 
 
     @Override
-    public void renderTo(IViewport viewport, Activity on, IServiceProvider site) {
+    public void onViewport(IViewport viewport, Activity on, IServiceProvider site) {
+        this.site=site;
+        this.widgetMap=new HashMap<>();
+        IWidget widget=new MessagerWidget();
+        widgetMap.put(String.format("/%s",widget.name()),widget);
         viewport.setToolbarInfo("消息",false,on);
     }
 
@@ -79,29 +84,24 @@ public class MessagerRegion extends Fragment implements IDesktopRegion {
     }
 
     @Override
-    public BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView,final Activity on) {
-        bottomNavigationView.clearMenu();
+    public CJBottomNavigationView.OnCheckedChangeListener onResetNavigationMenu(CJBottomNavigationView bottomNavigationView, final Activity on) {
         bottomNavigationView.inflateMenu(R.menu.navigation_message);
-
-        if (bottomNavigationView.getMenu().size() > 0) {
-            MenuView.ItemView view=bottomNavigationView.getBottomNavigationItemView(0);
-            Log.i("pos 0",view.getItemData()+"");
-            bottomNavigationView.setIconTintList(0, on.getResources().getColorStateList(R.color.colorGray));
-            bottomNavigationView.setTextTintList(0, on.getResources().getColorStateList(R.color.colorGray));
-            bottomNavigationView.setBadgeAt(0, 49, 20, 0, on, new Badge.OnDragStateChangedListener() {
-                @Override
-                public void onDragStateChanged(int dragState, Badge badge, View targetView) {
-                    if (Badge.OnDragStateChangedListener.STATE_SUCCEED == dragState)
-                        Toast.makeText(on, R.string.tips_badge_removed, Toast.LENGTH_SHORT).show();
-                }
-            });
+        if(bottomNavigationView.getChildCount()>0) {
+            BadgeRadioButton badgeRadioButton = (BadgeRadioButton) bottomNavigationView.getChildAt(0);
+            badgeRadioButton.setBadgeNumber(332);
         }
-        MessagerOnNavigationSelectListener listener = new MessagerOnNavigationSelectListener(bottomNavigationView, on.getResources());
+        MessagerOnNavigationSelectListener listener = new MessagerOnNavigationSelectListener(on.getResources());
         return listener;
     }
 
     @Override
     public boolean isBottomNavigationViewVisibility() {
         return true;
+    }
+
+    @Override
+    public IWidget widget(String navigateable) {
+        IWidget widget=widgetMap.get(navigateable);
+        return widget;
     }
 }

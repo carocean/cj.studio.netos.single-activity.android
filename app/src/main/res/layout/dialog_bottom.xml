@@ -34,14 +34,14 @@
 
     <View style="@style/DeepUnderLineDp"/>
 
-    <cj.studio.netos.framework.thirty.BottomNavigationViewEx
+    <cj.studio.netos.framework.view.CJBottomNavigationView
         android:id="@+id/popup_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_gravity="bottom|end"
         android:background="@color/colorWhite"
-        app:itemIconTint="@color/selector_item_primary_color"
-        app:itemTextColor="@color/selector_item_primary_color"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:menu="@menu/navigation_popup"/>
 
 </LinearLayout>

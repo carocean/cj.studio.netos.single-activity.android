@@ -8,8 +8,7 @@ import android.support.v7.widget.Toolbar;
 import cj.studio.netos.R;
 import cj.studio.netos.framework.INavigation;
 import cj.studio.netos.framework.IViewport;
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
-import cj.studio.netos.framework.util.ForbiddenNavigationAnimation;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
 public class DesktopViewport implements IViewport {
     public DesktopViewport() {
@@ -21,15 +20,14 @@ public class DesktopViewport implements IViewport {
     }
 
     @Override
-    public BottomNavigationViewEx setNavigation(INavigation navigation, Activity on) {
-        BottomNavigationViewEx view = on.findViewById(R.id.module_navigation);
+    public CJBottomNavigationView setNavigation(INavigation navigation, Activity on) {
+        CJBottomNavigationView view = on.findViewById(R.id.module_navigation);
         if(view==null)return null;
-        ForbiddenNavigationAnimation.disableShiftMode(view);
-        view.setOnNavigationItemSelectedListener(navigation.onNavigationItemSelectedEvent(on));
+        view.setOnCheckedChangeListener(navigation.onNavigationItemSelectedEvent(on));
         return view;
     }
     @Override
-    public BottomNavigationViewEx navigationView( Activity on) {
+    public CJBottomNavigationView navigationView( Activity on) {
 
         return on.findViewById(R.id.module_navigation);
     }

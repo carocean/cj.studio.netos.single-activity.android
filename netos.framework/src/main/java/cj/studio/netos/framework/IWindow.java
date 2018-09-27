@@ -1,24 +1,23 @@
 package cj.studio.netos.framework;
 
 import android.app.Activity;
-import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import cj.studio.netos.framework.thirty.BottomNavigationViewEx;
+import cj.studio.netos.framework.view.CJBottomNavigationView;
 
-public interface IWindow {
+public interface IWindow{
     String name();
 
     int viewport();
 
-    void renderTo(IViewport viewport, Activity on, IServiceProvider site);
+    void onViewport(IViewport viewport, Activity on, IServiceProvider site);
 
     boolean onToolbarMenuInstall(MenuInflater menuInflater, Menu menu);
 
     boolean onToolbarMenuSelected(MenuItem item, IServiceProvider site);
-    BottomNavigationView.OnNavigationItemSelectedListener onResetNavigationMenu(BottomNavigationViewEx bottomNavigationView, Activity on);
+    CJBottomNavigationView.OnCheckedChangeListener onResetNavigationMenu(CJBottomNavigationView view, Activity on);
 
     boolean isBottomNavigationViewVisibility();
 }

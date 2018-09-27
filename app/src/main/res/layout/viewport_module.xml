@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/module_viewport"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false">
@@ -12,6 +13,11 @@
         android:layout_height="56dp"
         android:fitsSystemWindows="false"
         android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/module_nestedContainer"
         app:expanded="false">
 
 
@@ -25,27 +31,24 @@
             app:title="cj"></android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <FrameLayout
         android:id="@+id/module_nestedContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="56dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activity_netos"
-        tools:showIn="@layout/viewport_desktop">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/module_navigation"
+        app:layout_constraintTop_toBottomOf="@+id/module_appbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
 
         <FrameLayout
             android:id="@+id/module_display"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></FrameLayout>
-    </android.support.v4.widget.NestedScrollView>
+            android:layout_height="match_parent"></FrameLayout>
+    </FrameLayout>
 
 
     <include layout="@layout/navigation_bottom"></include>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>

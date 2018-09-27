@@ -7,4 +7,5 @@ package cj.studio.netos.framework;
 public interface IModule extends IWindow{
     void input(Frame frame, IServiceProvider site);
 
-    }
+    IWidget widget(String navigateable);
+}

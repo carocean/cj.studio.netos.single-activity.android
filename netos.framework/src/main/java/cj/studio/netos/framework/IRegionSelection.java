@@ -1,4 +1,4 @@
-package cj.studio.netos.module.desktop;
+package cj.studio.netos.framework;
 
 public interface IRegionSelection {
     IDesktopRegion selectRegion();

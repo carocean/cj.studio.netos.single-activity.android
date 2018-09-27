@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<cj.studio.netos.framework.thirty.BottomNavigationViewEx xmlns:android="http://schemas.android.com/apk/res/android"
+<cj.studio.netos.framework.view.CJBottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/module_navigation"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="56dp"
     android:layout_gravity="bottom|end"
+    app:layout_constraintBottom_toBottomOf="parent"
     android:background="?android:attr/windowBackground"
-    android:visibility="visible"
-    app:itemIconTint="@color/selector_item_primary_color"
-    app:itemTextColor="@color/selector_item_primary_color"
+    android:orientation="horizontal"
+    android:gravity="center"
     app:menu="@menu/navigation_module">
 
-</cj.studio.netos.framework.thirty.BottomNavigationViewEx>
+</cj.studio.netos.framework.view.CJBottomNavigationView>

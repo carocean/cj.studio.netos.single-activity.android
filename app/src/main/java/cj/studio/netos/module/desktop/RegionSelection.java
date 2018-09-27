@@ -1,8 +1,7 @@
 package cj.studio.netos.module.desktop;
 
-import android.app.Activity;
-
-import cj.studio.netos.framework.IViewport;
+import cj.studio.netos.framework.IDesktopRegion;
+import cj.studio.netos.framework.IRegionSelection;
 
 public class RegionSelection implements IRegionSelection {
     IDesktopRegion selectRegion;

@@ -2,8 +2,11 @@ package cj.studio.netos.framework;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Handler;
+import android.os.Message;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,16 +22,26 @@ public final class Workbench implements IWorkbench, ICell {
     private IAxon axon;
     private Map<String, IModule> moduleMap;//模块容器，另外还有：微应用容器（微应用需要安装）。而微网站仅需要安装微网站模板，一个模板支撑无数企业的移动门户
     private Map<String, IDendrite> dendriteMap;//key是突触名即模块名
-    private Map<String, IViewport> viewportMap;
     private IProfile profile;
     ISurfaceHost host;
     INavigation navigation;
     ISelection selection;
     private IServiceSite site;
+    IHistory history;
+    ILocation location;
+    boolean isExit;
+    Handler mHandler;
+    INavigation widgetNavigation;
 
     public Workbench(IServiceProvider parent) {
-
         this.site = new ServiceSite(parent);
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                isExit = false;
+            }
+        };
     }
 
     @Override
@@ -48,7 +61,6 @@ public final class Workbench implements IWorkbench, ICell {
         moduleMap.clear();
         site.dispose();
         dendriteMap.clear();
-        viewportMap.clear();
     }
 
     @Override
@@ -159,17 +171,21 @@ public final class Workbench implements IWorkbench, ICell {
     @Override
     public <T> T getService(String name) {
         if ("$.workbench".equals(name)) {
-            return (T)this;
+            return (T) this;
         }
         if ("$.net.http".equals(name)) {
             return site.getService(name);//http通讯服务
         }
-        if(name.startsWith("$.module.")){
-            String mname=name.substring("$.module.".length(),name.length());
-            IModule module=moduleMap.get(mname);
-            return (T)module;
+        if (name.startsWith("$.module.")) {
+            String mname = name.substring("$.module.".length(), name.length());
+            IModule module = moduleMap.get(mname);
+            return (T) module;
         }
-
+        if (name.startsWith("$.viewport.")) {
+            String mname = name.substring("$.viewport.".length(), name.length());
+            IViewport viewport = host.viewport(Integer.valueOf(mname));
+            return (T) viewport;
+        }
         return site.getService(name);
     }
 
@@ -179,7 +195,7 @@ public final class Workbench implements IWorkbench, ICell {
             return (T) this;
         }
         if (clazz.isAssignableFrom(IAxon.class)) {
-            return (T)this.axon;
+            return (T) this.axon;
         }
         if (clazz.isAssignableFrom(IModule.class)) {
             return (T) moduleMap.values();
@@ -207,14 +223,20 @@ public final class Workbench implements IWorkbench, ICell {
         Application app = site.getService(Application.class);
 //        Content content =app.getApplicationContext();
         //根据app获得以下信息并初始化
-        host=new SurfaceHost(site);
+        host = new SurfaceHost(site);
         this.moduleMap = new HashMap<>();
         this.dendriteMap = new HashMap<>();
-        this.viewportMap = new HashMap<>();
 
-        navigation=new ModuleNavigation(this);
-        selection=new Selection(this);
+         widgetNavigation=new WidgetNavigation(this);
+        navigation = new ModuleNavigation(this);
+        selection = new Selection(this);
 
+        location = new PathLocation();
+        location.setModuleNav(navigation);
+        location.setSelection(selection);
+        location.setWidgetNav(widgetNavigation);
+
+        history = new Hisory(location);
 
         registerServices();
 
@@ -230,6 +252,7 @@ public final class Workbench implements IWorkbench, ICell {
     }
 
     protected void registerServices() {
+
     }
 
 
@@ -238,15 +261,39 @@ public final class Workbench implements IWorkbench, ICell {
 
         site.addService("$.workbench.selection", selection);
         site.addService("$.workbench.navigation", navigation);
+        site.addService("$.workbench.navigation.module", navigation);
+        site.addService("$.workbench.navigation.widget", widgetNavigation);
         site.addService("$.workbench.host", host);
+        site.addService("$.workbench.location", location);
+        site.addService("$.workbench.history", history);
 
         host.bindUI(activity);
 
         navigation.navigate("desktop");
     }
+@Override
+    public void finish(Activity activity) {
+        if (history.undo()) {
+            exit(activity);
+        }
+    }
 
-
-
+    /**
+     * 点击两次退出程序
+     */
+    private void exit(Activity activity) {
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(activity.getApplicationContext(), "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
+            // 利用handler延迟发送更改状态信息
+            mHandler.sendEmptyMessageDelayed(0, 2000);
+        } else {
+            activity.finish();
+            //参数用作状态码；根据惯例，非 0 的状态码表示异常终止。
+            System.exit(0);
+        }
+    }
 
 
     class MPusherPin implements IMessagePin {

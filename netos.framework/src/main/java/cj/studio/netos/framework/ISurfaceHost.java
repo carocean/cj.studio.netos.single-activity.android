@@ -10,4 +10,6 @@ public interface ISurfaceHost {
     void showWindow(IWindow window);
 
     IViewport viewport(int viewport);
+
+    Object owner();
 }
