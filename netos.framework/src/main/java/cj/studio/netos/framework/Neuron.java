@@ -38,7 +38,8 @@ public final class Neuron extends Application implements INeuron, IServiceProvid
     IServiceProvider provider;
 
     @Override
-    public void onCreate() {super.registerActivityLifecycleCallbacks(new Lifecycle(this));
+    public void onCreate() {
+        super.registerActivityLifecycleCallbacks(new Lifecycle(this));
         super.onCreate();
         refresh();
     }
